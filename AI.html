@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساعد الجامعة الذكي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* تنسيقات عامة */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* حاوية الشات */
+.chat-container {
+    width: 90%;
+    max-width: 500px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* رأس الشات */
+.chat-header {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.chat-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.chat-header p {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* منطقة الرسائل */
+.chat-messages {
+    height: 400px;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+
+/* رسائل المستخدم والمساعد */
+.message {
+    margin-bottom: 15px;
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    line-height: 1.5;
+    position: relative;
+}
+
+.user-message {
+    background-color: #3498db;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+.bot-message {
+    background-color: #ecf0f1;
+    color: #333;
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+}
+
+/* منطقة الإدخال */
+.chat-input {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+.chat-input input:focus {
+    border-color: #3498db;
+}
+
+.chat-input button {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.chat-input button:hover {
+    background-color: #3498db;
+}
+
+/* تأثيرات التحميل */
+.typing-indicator {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #ecf0f1;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.typing-indicator span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #7f8c8d;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: typing 1s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+/* التمرير */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #bdc3c7;
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+}
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>مساعد الجامعة الذكي</h2>
+            <p>كيف يمكنني مساعدتك اليوم؟</p>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- الرسائل تظهر هنا -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="اكتب سؤالك هنا..." autocomplete="off">
+            <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    
+    // قاعدة بيانات الأسئلة والأجوبة (يمكن استبدالها بAPI ذكاء اصطناعي)
+    const universityQA = {
+        "السلام عليكم": "وعليكم السلام ورحمة الله وبركاته! كيف يمكنني مساعدتك اليوم؟",
+        "ما هي مواعيد التسجيل؟": "مواعيد التسجيل للفصل الجديد تبدأ من 1 سبتمبر حتى 15 سبتمبر. يمكنك التسجيل عبر الموقع الإلكتروني للجامعة.",
+        "ما هي الأوراق المطلوبة للتسجيل؟": "الأوراق المطلوبة تشمل: صورة من شهادة الثانوية العامة، صورة من بطاقة الهوية، 4 صور شخصية، واستمارة التسجيل المملوءة.",
+        "كم تبلغ رسوم التسجيل؟": "رسوم التسجيل تختلف حسب الكلية. بشكل عام تتراوح بين 5000 إلى 8000 جنيه لكل فصل دراسي.",
+        "ما هي الكليات المتاحة؟": "الجامعة توفر كليات: الهندسة، الطب، الصيدلة، الحاسبات والمعلومات، التجارة، والآداب.",
+        "هل يوجد سكن جامعي؟": "نعم، يوجد سكن جامعي للطلاب والطالبات. يمكنك التقديم عبر مكتب شؤون الطلاب بعد اكتمال تسجيلك.",
+        "كيف يمكنني التواصل مع الإدارة؟": "يمكنك التواصل عبر البريد الإلكتروني: info@university.edu أو الهاتف: 0123456789 من الأحد إلى الخميس من 9 صباحًا إلى 3 مساءً.",
+        "شكرا": "العفو! لا تتردد في السؤال عن أي شيء آخر. نتمنى لك يومًا سعيدًا!",
+        "default": "عذرًا، لم أفهم سؤالك. يمكنك طرح سؤال آخر أو التواصل مع الإدارة مباشرة."
+    };
+    
+    // إضافة رسالة إلى الشات
+    function addMessage(message, isUser) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+        messageDiv.textContent = message;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    // عرض مؤشر الكتابة
+    function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.classList.add('typing-indicator');
+        typingDiv.id = 'typing';
+        typingDiv.innerHTML = '<span></span><span></span><span></span>';
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    // إخفاء مؤشر الكتابة
+    function hideTypingIndicator() {
+        const typingDiv = document.getElementById('typing');
+        if (typingDiv) {
+            typingDiv.remove();
+        }
+    }
+    
+    // معالجة إدخال المستخدم
+    function handleUserInput() {
+        const message = userInput.value.trim();
+        if (message === '') return;
+        
+        addMessage(message, true);
+        userInput.value = '';
+        
+        showTypingIndicator();
+        
+        // محاكاة تأخير للرد (يمكن استبدالها باتصال بAPI ذكاء اصطناعي)
+        setTimeout(() => {
+            hideTypingIndicator();
+            const response = getBotResponse(message);
+            addMessage(response, false);
+        }, 1500);
+    }
+    
+    // الحصول على رد المساعد
+    function getBotResponse(message) {
+        // تحويل الرسالة إلى حروف صغيرة وإزالة علامات الترقيم
+        const processedMessage = message.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()؟،]/g, '');
+        
+        // البحث عن أفضل تطابق في قاعدة البيانات
+        for (const [question, answer] of Object.entries(universityQA)) {
+            if (processedMessage.includes(question.toLowerCase())) {
+                return answer;
+            }
+        }
+        
+        // إذا لم يتم العثور على تطابق، استخدم الرد الافتراضي
+        return universityQA.default;
+    }
+    
+    // أحداث النقر على الزر والضغط على إنتر
+    sendBtn.addEventListener('click', handleUserInput);
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            handleUserInput();
+        }
+    });
+    
+    // رسالة ترحيبية أولية
+    setTimeout(() => {
+        addMessage("مرحباً بك في مساعد الجامعة الذكي! كيف يمكنني مساعدتك اليوم؟", false);
+    }, 500);
+});
+    </script>
+</body>
+</html>

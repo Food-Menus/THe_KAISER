@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>October High Institute</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="./اساسيات/Logo2.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    
+    <div class="sidebar">
+        <h2 class="logo"> THe KAISER site </h2>
+        <div class="sidebar-menus">
+            <a href="https://www.facebook.com/ohinstitute">الصفحة الرسمية</a>
+            <a href="https://www.ohi.edu.eg/default.aspx">الموقع الرسمي</a>
+            <a href="https://wa.me/+201102716716?text=مرحبا اريد التواصل معكم">الدعم الفني</a>
+            <a href="./about.html">من نحن</a>
+            <a href="./اساسيات/WhatsApp .jpg">صوره المعهد</a>
+            <a href="./AI.html">المساعد الذكي</a>
+            <a href="#" class="menu-off">إغلاق</a>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <div class="navbar">
+            <div class="menu-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                    <path d="M5 5H13V19H5V5ZM19 19H15V5H19V19ZM4 3C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4C21 3.44772 20.5523 3 20 3H4ZM7 12L11 8.5V15.5L7 12Z"></path>
+                </svg>
+            </div>
+            
+            <img class="head-img" src="./اساسيات/Logo1.png" alt="شعار المعهد">
+            
+            <a href="./Location.html" class="user">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                    <path d="M12 20.8995L16.9497 15.9497C19.6834 13.2161 19.6834 8.78392 16.9497 6.05025C14.2161 3.31658 9.78392 3.31658 7.05025 6.05025C4.31658 8.78392 4.31658 13.2161 7.05025 15.9497L12 20.8995ZM12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364L12 23.7279ZM12 13C13.1046 13 14 12.1046 14 11C14 9.89543 13.1046 9 12 9C10.8954 9 10 9.89543 10 11C10 12.1046 10.8954 13 12 13ZM12 15C9.79086 15 8 13.2091 8 11C8 8.79086 9.79086 7 12 7C14.2091 7 16 8.79086 16 11C16 13.2091 14.2091 15 12 15Z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <div class="marquee">
+            <p>مشروع تخرج لطلاب معهد اكتوبر العالي للهندسة</p>
+        </div>
+ 
+        <div class="background"><br>
+        <h1 class="page-title">نموذج تسجيل الطلاب</h1>
+        <div class="registration-form">
+            <form id="registration-form" name="registration-form">
+                <div class="form-group">
+                    <label for="name">الاسم الكامل:</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="code">الكود الجامعي:</label>
+                    <input type="text" id="code" name="code" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="age">العمر:</label>
+                    <input type="number" id="age" name="age" class="form-control" min="16" max="30" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني:</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="department">القسم:</label>
+                    <select id="department" name="department" class="form-control" required>
+                        <option value="">اختر القسم</option>
+                        <option value="cs">استثمار وبنوك</option>
+                        <option value="it">نظم معلومات الاعمال</option>
+                        <option value="is">إدار اعمال</option>
+                        <option value="ai">تسويق</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn">تسجيل</button>
+            </form>
+        </div><br>
+        </div>
+
+        <!-- قسم عرض البيانات -->
+        <div class="data-container">
+            <h1 class="data-title">بيانات الطلاب المسجلين</h1>
+            
+            <div id="data-container">
+                <!-- سيتم ملء البطاقات هنا بواسطة JavaScript -->
+                <div style="text-align: center; grid-column: 1 / -1;">جاري تحميل البيانات...</div>
+            </div>
+        </div>
+
+        <div class="services">
+            <button class="service-btn" id="copyButton">
+                <p id="phoneNumber">01006069292</p>
+                <p>اتصل بنا</p>
+            </button>
+            
+            <button class="service-btn" id="showQr">
+                <p>الكيو ار كود</p>
+            </button>
+        </div>
+
+        <div class="footer">
+            <p> ©2025 حقوق النشر طلاب معهد اكتوبر العالي للهندسة</p>
+        </div>
+
+    </div>
+
+    <script>
+
+        // إرسال نموذج التسجيل
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwrj9OpVczwOuocRk5U3zw2KVOKRSXzfJqHkNyE3gbJKnY9kjp5hjA_Lgs7wzGSkII/exec";
+        const form = document.forms["registration-form"];
+        
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            // التحقق من صحة النموذج قبل الإرسال
+            if(!form.checkValidity()) {
+                Swal.fire('خطأ', 'يرجى ملء جميع الحقول المطلوبة', 'error');
+                return;
+            }
+            
+            fetch(scriptURL, { 
+                method: "POST", 
+                body: new FormData(form) 
+            })
+            .then((response) => {
+                if(response.ok) {
+                    Swal.fire('تم بنجاح', 'تم تسجيل البيانات بنجاح', 'success');
+                    form.reset();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch((error) => {
+                Swal.fire('خطأ', 'حدث خطأ أثناء محاولة التسجيل', 'error');
+                console.error('Error:', error);
+            });
+        });
+
+    </script>
+
+    <script>
+
+        // جلب وعرض بيانات الطلاب من Google Sheets
+        const sheetID = '1jPKYsdxnocGk3Y8lJg00C_nppVLhEm07-v-LAx-gnq0';
+        const base = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+
+        fetch(base)
+            .then(response => response.text())
+            .then(data => {
+                const json = JSON.parse(data.substring(47).slice(0, -2));
+                const tableData = json.table.rows;
+                const dataContainer = document.getElementById('data-container');
+                
+                // مسح رسالة التحميل
+                dataContainer.innerHTML = '';
+                
+                if (!tableData || tableData.length === 0) {
+                    dataContainer.innerHTML = '<div style="text-align: center; grid-column: 1 / -1;">لا توجد بيانات متاحة</div>';
+                    return;
+                }
+
+                tableData.forEach((row, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+
+                    const name = row.c && row.c[0] ? row.c[0].v : "غير متوفر";
+                    const code = row.c && row.c[1] ? row.c[1].v : "غير متوفر";
+                    const age = row.c && row.c[2] ? row.c[2].v : "غير متوفر";
+                    const email = row.c && row.c[3] ? row.c[3].v : "غير متوفر";
+                    const department = row.c && row.c[4] ? row.c[4].v : "غير محدد";
+
+                    const registeredId = `registered-${index}`;
+                    const activeId = `active-${index}`;
+
+                    card.innerHTML = `
+                        <div class="card-content">
+                            <h2>الاسم: ${name}</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">الكود الجامعي: ${code}</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">العمر: ${age}</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">البريد الإلكتروني: ${email}</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">القسم: ${getDepartmentName(department)}</div>
+                        </div>
+                        <hr>
+                        <label class="checkybox">
+                            <input type="checkbox" id="${registeredId}" name="registered-${index}" value="registered"> تم التسجيل
+                        </label>
+                        <label class="checkybox">
+                            <input type="checkbox" id="${activeId}" name="active-${index}" value="active"> طالب نشط
+                        </label>
+                    `;
+                
+                    dataContainer.appendChild(card);
+
+                    // استعادة حالة checkboxes من localStorage
+                    const registeredCheckbox = document.getElementById(registeredId);
+                    const activeCheckbox = document.getElementById(activeId);
+
+                    const storedRegistered = localStorage.getItem(registeredId);
+                    if (storedRegistered === 'true') {
+                        registeredCheckbox.checked = true;
+                    }
+
+                    const storedActive = localStorage.getItem(activeId);
+                    if (storedActive === 'true') {
+                        activeCheckbox.checked = true;
+                    }
+
+                    // حفظ حالة checkboxes في localStorage عند التغيير
+                    registeredCheckbox.addEventListener('change', () => {
+                        localStorage.setItem(registeredId, registeredCheckbox.checked);
+                    });
+
+                    activeCheckbox.addEventListener('change', () => {
+                        localStorage.setItem(activeId, activeCheckbox.checked);
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('data-container').innerHTML = `
+                    <div style="text-align: center; grid-column: 1 / -1; color: var(--primary);">
+                        حدث خطأ أثناء جلب البيانات، يرجى المحاولة لاحقاً
+                    </div>
+                `;
+                Swal.fire('خطأ', 'حدث خطأ أثناء جلب البيانات', 'error');
+            });
+
+        // تحويل كود القسم إلى اسم قابل للقراءة
+        function getDepartmentName(code) {
+            const departments = {
+                'cs': 'علوم الحاسب',
+                'it': 'تكنولوجيا المعلومات',
+                'is': 'نظم المعلومات',
+                'ai': 'الذكاء الاصطناعي'
+            };
+            return departments[code] || code || 'غير محدد';
+        }
+    </script>
+
+    <script src="javascript.js"></script>
+</body>
+</html>
