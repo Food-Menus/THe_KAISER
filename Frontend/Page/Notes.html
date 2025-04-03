@@ -3,6 +3,9 @@
 
 <head>
     <div id="head" data-img="./../../Static/img/Logo2.png" data-style="./../../Static/style.css" > </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    
     <style>
         .footer {
             background: var(--primary-color-dark);
@@ -13,17 +16,18 @@
             bottom: 0; /* يضع الفوتر في أسفل الشاشة */
             width: 100%; /* يجعل الفوتر يمتد على كامل عرض الشاشة */
         }
-        </style>
+    </style>
 </head>
 
 <body>
-
-
-    <div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
-    <div id="navbar" data-Location="./Location.html" data-img="./../../Static/img/Logo1.png" ></div>
-
-
-
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--Components-->
+<div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
+<div id="navbar" data-Location="./Location.html" data-img="./../../Static/img/Logo1.png" ></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--elments-->
 
 
     <div class="form-container">
@@ -60,10 +64,6 @@
 
 
 
-
-
-    <div id="footer"></div>
-
     <script>
         const scriptURL = "    https://script.google.com/macros/s/AKfycbw4hSAIHKIg-4_hJxsPs6h8yTVW-xwQr4q4_cvr7PMCY4TI93hqkWIrT75dXtep13nK/exec";
         const form = document.forms["Notes-form"];
@@ -73,20 +73,25 @@
   
           fetch(scriptURL, { method: "POST", body: formData })
             .then((response) => {
-              swal("Done", "Submitted Successfully.", "success");
+              swal("ابسط", "رسالتك اتبعتت", "success");
             })
             .catch((error) => {
-              swal("Error", "Something went wrong. please try again!", "error");
+              swal("في مشكله", " رسالتك موصلتش ابعت بعدين", "error");
             });
         });
     </script>
 
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--Components--><div id="footer"></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--liberary-->
     <script src="./../../backend/javascript.js"></script>
     <script src="./../Components/sidebar.js"></script>
     <script src="./../Components/navbar.js"></script>
     <script src="./../Components/footer.js"></script>
     <script src="./../Components/Head.js"></script>
-
 </body>
 
 </html> 
