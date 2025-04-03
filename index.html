@@ -7,15 +7,54 @@
 
 <body>
     
-    <div id="sidebar" data-AI="./Frontend/Page/AI.html" data-about="./Frontend/Page/about.html"></div>
-    <div id="navbar" data-Location="./Frontend/Page/Location.html" data-img="./Static/img/Logo1.png" ></div>
-    <div id="footer"></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--Components-->
+<div id="sidebar" data-AI="./Frontend/Page/AI.html" data-about="./Frontend/Page/about.html"></div>
+<div id="navbar" data-Location="./Frontend/Page/Location.html" data-img="./Static/img/Logo1.png" ></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--elments-->
 
-    <script src="./backend/javascript.js"></script>
-    <script src="./Frontend/Components/sidebar.js"></script>
-    <script src="./Frontend/Components/navbar.js"></script>
-    <script src="./Frontend/Components/footer.js"></script>
-    <script src="./Frontend/Components/Head.js"></script>
+
+
+
+    <div class="welcome-text">
+    <h1>Welcome Back sir in <br><em>Your Home</em></h1>
+    <p>
+        This site is designed by the Kaiser to manage
+        his affairs and keep important points for the
+        benefit of those interested.
+    </p>
+    </div>
+
+    <div class="action-buttons">
+        <button class="action-btn">Tasks</button>
+        <button class="action-btn">Tasks</button>
+        <button class="action-btn">Tasks</button>
+        <button class="action-btn">Tasks</button>
+
+    </div>
+
+    <figure class="welcome-visual" onclick="toggleAudio()">
+        <audio id="sound-control" src="./Static/sound/Jarvis sound(MP3_128K).mp3"></audio>
+        <img src="./Static/img/header.png" alt="Welcome illustration">
+    </figure>
+
+
+
+
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--Components--><div id="footer"></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--liberary-->
+<script src="./backend/javascript.js"></script>
+<script src="./Frontend/Components/sidebar.js"></script>
+<script src="./Frontend/Components/navbar.js"></script>
+<script src="./Frontend/Components/footer.js"></script>
+<script src="./Frontend/Components/Head.js"></script>
 
 </body>
 

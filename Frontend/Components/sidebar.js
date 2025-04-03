@@ -6,13 +6,15 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return `
         <div class="sidebar">
-            <h2 class="logo">THe KAISER site</h2>
+            <h2 class="logo">The KAISER Site</h2>
             <div class="sidebar-menus">
-                <a href="https://www.facebook.com/ohinstitute">الصفحة الرسمية</a>
-                <a href="https://www.ohi.edu.eg/default.aspx">الموقع الرسمي</a>
-                <a href="https://wa.me/+201102716716?text=مرحبا اريد التواصل معكم">الدعم الفني</a>
-                <a href="${about}">من نحن</a>
-                <a href="${AI}">المساعد الذكي</a>
+                <a href="https://thekaiser.vercel.app/">الصفحة الرئيسية</a>
+                <a href="https://www.facebook.com/ohinstitute">فيس بوك</a>
+                <a href="https://www.facebook.com/Techno.Science.TC">صفحة تيكنو ساينس</a>
+                <a href="https://wa.me/+201147182463?text=مرحبا اريد التواصل معكم">الدعم الفني</a>
+                <a href="${about}">من القيصر</a>
+                <a href="${AI}">جارفيس</a>
+                <br>
                 <a href="#" class="menu-off">إغلاق</a>
             </div>
         </div>
