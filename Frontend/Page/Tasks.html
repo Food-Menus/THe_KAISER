@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <div id="head" data-img="./../../Static/img/Logo2.png" data-style="./../../Static/style.css"></div>
+    <style>
+    .footer {
+        background: var(--primary-color-dark);
+        color: white;
+        text-align: center;
+        padding: 15px;
+        position: fixed; /* يجعل الفوتر ثابتًا في أسفل الشاشة */
+        bottom: 0; /* يضع الفوتر في أسفل الشاشة */
+        width: 100%; /* يجعل الفوتر يمتد على كامل عرض الشاشة */
+    }
+    </style>
+</head>
+
+<body>
+
+    <div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
+    <div id="navbar" data-Location="./Location.html" data-img="./../../Static/img/Logo1.png"></div>
+
+    <!-- Notes Section -->
+    <div class="notes-container">
+        <h2>الملاحظات</h2> <br>
+        <div class="note-input">
+            <input type="text" id="note-input" placeholder="اكتب ملاحظة جديدة...">
+        </div>
+        <div class="note-input"><button id="add-note">إضافة</button></div>
+        <ul id="notes-list" class="notes-list"></ul>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="./../../backend/javascript.js"></script>
+    <script src="./../Components/sidebar.js"></script>
+    <script src="./../Components/navbar.js"></script>
+    <script src="./../Components/footer.js"></script>
+    <script src="./../Components/Head.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load notes from localStorage
+            loadNotes();
+            
+            // Add note event listener
+            document.getElementById('add-note').addEventListener('click', addNote);
+            document.getElementById('note-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addNote();
+                }
+            });
+            
+            function addNote() {
+                const noteInput = document.getElementById('note-input');
+                const noteText = noteInput.value.trim();
+                
+                if (noteText) {
+                    // Get existing notes or create new array
+                    const notes = JSON.parse(localStorage.getItem('notes')) || [];
+                    
+                    // Add new note
+                    notes.push({
+                        text: noteText,
+                        completed: false,
+                        id: Date.now() // Unique ID for each note
+                    });
+                    
+                    // Save to localStorage
+                    localStorage.setItem('notes', JSON.stringify(notes));
+                    
+                    // Clear input
+                    noteInput.value = '';
+                    
+                    // Reload notes
+                    loadNotes();
+                }
+            }
+            
+            function loadNotes() {
+                const notesList = document.getElementById('notes-list');
+                notesList.innerHTML = '';
+                
+                const notes = JSON.parse(localStorage.getItem('notes')) || [];
+                
+                notes.forEach(note => {
+                    const li = document.createElement('li');
+                    li.className = 'note-item';
+                    if (note.completed) {
+                        li.classList.add('completed');
+                    }
+                    
+                    li.innerHTML = `
+                        <button class="delete-note" data-id="${note.id}">حذف</button>
+                        <span class="note-text">${note.text}</span>
+                        <input type="checkbox" class="note-checkbox" ${note.completed ? 'checked' : ''} data-id="${note.id}">
+                    `;
+                    
+                    notesList.appendChild(li);
+                });
+                
+                // Add event listeners to checkboxes
+                document.querySelectorAll('.note-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', toggleNoteComplete);
+                });
+                
+                // Add event listeners to delete buttons
+                document.querySelectorAll('.delete-note').forEach(button => {
+                    button.addEventListener('click', deleteNote);
+                });
+            }
+            
+            function toggleNoteComplete(e) {
+                const noteId = parseInt(e.target.dataset.id);
+                const notes = JSON.parse(localStorage.getItem('notes')) || [];
+                
+                const updatedNotes = notes.map(note => {
+                    if (note.id === noteId) {
+                        return {
+                            ...note,
+                            completed: e.target.checked
+                        };
+                    }
+                    return note;
+                });
+                
+                localStorage.setItem('notes', JSON.stringify(updatedNotes));
+                loadNotes();
+            }
+            
+            function deleteNote(e) {
+                const noteId = parseInt(e.target.dataset.id);
+                const notes = JSON.parse(localStorage.getItem('notes')) || [];
+                
+                const updatedNotes = notes.filter(note => note.id !== noteId);
+                localStorage.setItem('notes', JSON.stringify(updatedNotes));
+                loadNotes();
+            }
+        });
+    </script>
+</body>
+
+</html>

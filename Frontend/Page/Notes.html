@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <div id="head" data-img="./../../Static/img/Logo2.png" data-style="./../../Static/style.css" > </div>
+    <style>
+        .footer {
+            background: var(--primary-color-dark);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: fixed; /* يجعل الفوتر ثابتًا في أسفل الشاشة */
+            bottom: 0; /* يضع الفوتر في أسفل الشاشة */
+            width: 100%; /* يجعل الفوتر يمتد على كامل عرض الشاشة */
+        }
+        </style>
+</head>
+
+<body>
+
+
+    <div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
+    <div id="navbar" data-Location="./Location.html" data-img="./../../Static/img/Logo1.png" ></div>
+
+
+
+
+
+    <div class="form-container">
+        <form id="Notes-form" class="message-form">
+            <h1 class="form-title">اكتب اسمك وعاوز تقول للقيصر ايه وانا وهوصله</h1>
+            
+            <div class="form-group">
+                <label for="name" class="sr-only">اسمك</label>
+                <input class="form-input"
+                       type="text"
+                       name="name"
+                       id="name"
+                       placeholder="اسمك"
+                       required
+                       aria-label="اسمك">
+            </div>
+    
+            <div class="form-group">
+                <label for="notes" class="sr-only">رسالتك</label>
+                <input class="form-input"
+                       type="text"
+                       name="notes"
+                       id="notes"
+                       placeholder="رسالتك"
+                       required
+                       aria-label="رسالتك">
+            </div>
+    
+            <button type="submit" class="submit-btn">
+                <span class="btn-text">أرسال</span>
+            </button>
+        </form>
+    </div>
+
+
+
+
+
+    <div id="footer"></div>
+
+    <script>
+        const scriptURL = "    https://script.google.com/macros/s/AKfycbw4hSAIHKIg-4_hJxsPs6h8yTVW-xwQr4q4_cvr7PMCY4TI93hqkWIrT75dXtep13nK/exec";
+        const form = document.forms["Notes-form"];
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          var formData = new FormData(form);
+  
+          fetch(scriptURL, { method: "POST", body: formData })
+            .then((response) => {
+              swal("Done", "Submitted Successfully.", "success");
+            })
+            .catch((error) => {
+              swal("Error", "Something went wrong. please try again!", "error");
+            });
+        });
+    </script>
+
+    <script src="./../../backend/javascript.js"></script>
+    <script src="./../Components/sidebar.js"></script>
+    <script src="./../Components/navbar.js"></script>
+    <script src="./../Components/footer.js"></script>
+    <script src="./../Components/Head.js"></script>
+
+</body>
+
+</html> 
