@@ -9,7 +9,7 @@
     :root {
         --primary: #eaa11b;  
         --primary-color-dark: #AA0505;   
-        --color-one: #67C7EB ;   
+        --color-one: #FBCA03 ;   
         --color-two: #B9BEBA;
         --light: #f8f9fa;     
         --primary-color: #6A0C0B;
@@ -184,7 +184,7 @@
         font-family: "Orbitron", sans-serif;
     }
     .welcome-text p {
-        text-align: center;
+        text-align: justify; /* جعل الكلام متساويًا من الجانبين */
         background-color: rgba(0, 0, 0, 0.716); 
         border-radius: 7px; 
         padding: 15px; 
@@ -552,21 +552,190 @@
 /***************************************************************************/
 /* profile page ptn */
 
+    .profileBTN {
+        display: block;
+        width: 300px; 
+        background-color: #2e2929;
+        color: var(--primary); 
+        margin: 1rem auto; 
+        font-size: 45px; 
+        font-family: "Orbitron", sans-serif;
+        text-align: center; 
+        border-radius: 20px;
+        font-weight: bold; 
+        padding: 10px; 
+    }
+
+/***************************************************************************/
+/***************************************************************************/
+/* profile login */
+
+    #loginForm {
+        height: 80%;
+        width: 90%; /* تحديد عرض النموذج */
+        margin: 40% auto; /* توسيط النموذج أفقيًا وعموديًا */
+        padding: 20px;
+        background-color: var(--primary-color-dark); /* لون خلفية النموذج */
+        border-radius: 8px; /* حواف دائرية للنموذج */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* ظل خفيف للنموذج */
+    }
+    #loginForm h4 {
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.716);
+        border-radius: 15px;
+        color: white;
+        padding: 15px;
+        font-size: 20px;
+        margin-bottom: 20px; /* إضافة مساحة أسفل العنوان */
+    }
+    #loginForm input[type="text"],
+    #loginForm input[type="password"] {
+        width:100% ; /* تحديد عرض حقول الإدخال */
+        padding: 10px;
+        font-size: 18px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd; /* حدود حقول الإدخال */
+        border-radius: 4px; /* حواف دائرية لحقول الإدخال */
+        box-sizing: border-box; /* تضمين padding و border في عرض حقول الإدخال */
+    }
+    #loginForm button[type="submit"] {
+        width: 50%;
+        padding: 12px;
+        background-color: var(--color-one);
+        color: var(--primary-color);
+        border: none;
+        border-radius: 4px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 0 auto; /* توسيط الزر أفقيًا */
+        display: block; /* جعل الزر يأخذ كامل عرض الصف */
+    }
+    #loginForm button[type="submit"]:hover {
+        background-color: #0056b3; /* تغيير لون الخلفية عند التمرير */
+    }
+
+/***************************************************************************/
+/***************************************************************************/
+/* profile list */
 
 
-.profileBTN {
-    display: block; /* تغيير العرض إلى block لجعله يأخذ كامل عرض الصف */
-    width: 250px; /* تحديد عرض الزر */
-    background-color: #2e2929; /* تغيير الخلفية إلى اللون الرمادي */
-    color: var(--primary); /* لون النص */
-    margin: 1rem auto; /* توسيط الزر أفقيًا وإضافة هامش علوي */
-    font-size: 45px; /* حجم الخط */
-    font-family: "Noto Kufi Arabic", sans-serif; /* نوع الخط */
-    text-align: center; /* توسيط النص داخل الزر */
-    border-radius: 20px; /* حواف دائرية للزر */
-    font-weight: bold; /* جعل النص عريضًا */
-    padding: 10px; /* إضافة مساحة داخلية للزر */
+.scan-menu {
+    height: 80%;
+    width: 90%; /* تحديد عرض النموذج */
+    margin: 10% auto; /* توسيط النموذج أفقيًا وعموديًا */
+    padding: 5px;
+    position: relative;
+    width: 300px;
+    background: #00000082;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: "Orbitron", sans-serif;
+
 }
+.menu-header {
+    border-radius: 10px;
+    background: #00000083;
+    color: rgb(255, 255, 255);
+    padding: 20px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+
+}
+.menu-items {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.scan-menu.active .menu-items {
+    max-height: 500px;
+}
+.menu-item {
+    font-size: 20px;
+    padding: 15px 10px;
+    display: flex;
+    align-items: center; /* توسيط العناصر عموديًا */
+    justify-content: center; /* توسيط العناصر أفقيًا */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    color: #ffffff;
+    font-weight: 500;
+
+}
+.scan-menu.active .menu-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+.menu-item:nth-child(1) { transition-delay: 0.1s; }
+.menu-item:nth-child(2) { transition-delay: 0.2s; }
+.menu-item:nth-child(3) { transition-delay: 0.3s; }
+.menu-item:nth-child(4) { transition-delay: 0.4s; }
+.menu-item:nth-child(5) { transition-delay: 0.5s; }
+.menu-item:hover {
+    background: #f8f9fa;
+}
+.menu-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to bottom, #6e8efb, #a777e3);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.5s ease;
+}
+.menu-item:hover::before {
+    transform: scaleY(1);
+}
+.menu-item i {
+    color: #a777e3;
+    font-size: 1.2rem;
+
+}
+.scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #6e8efb, transparent);
+    animation: scan 2s linear infinite;
+    opacity: 0;
+}
+.scan-menu.active .scan-line {
+    opacity: 1;
+}
+.delete-btn {
+    display: block; /* يجعل الزر يأخذ كامل عرض الصف */
+    padding: 10px  20px;
+    border-radius: 20px;
+    font-size: 18px;
+    color: var(--light);
+    border: #ffffff;
+    background-color: #ff2121;
+    font-weight: bold;
+}
+@keyframes scan {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+
 /***************************************************************************/
 /***************************************************************************/
 /* Responsive Design */
