@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <link rel="icon" href="./../../Static/img/Logo2.png" type="image/x-icon">
+    <link rel="stylesheet" href="./../../Static/style.css">
+</head>
+
+<body>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--head-->
+<div id="head" data-imgH="./../../Static/img/Logo2.png" data-style="./../../Static/style.css" > </div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--Components-->
+    <div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
+    <div id="navbar" data-Location="./../../index.html" data-imgN="./../../Static/img/Logo1.png" ></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--elments-->
+
+
+
+
+
+<figure class="welcome-visual" onclick="toggleAudio()">
+    <img src="./../../Static/img/music.png" alt="Welcome illustration">
+</figure>
+
+<div class="scan-menu">
+    <div class="scan-line"></div>
+    <div class="menu-header">
+        <span style=" font-family: Orbitron, sans-serif;"> My List  </span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="menu-items">
+        <div class="menu-item">
+            <i class="fas fa-home"></i>
+            <span>قائمة الاغاني</span>
+        </div><hr>
+        <div class="menu-item">
+            <i class="fas fa-user"></i>
+            <span>اكواد سريعة التحضير</span>
+        </div><hr>
+        <div class="menu-item">
+            <i class="fas fa-cog"></i>
+            <span>مواقع مهمه</span>
+        </div><hr>
+        <div class="menu-item">
+            <i class="fas fa-envelope"></i>
+            <span>ارقام مهمه</span>
+        </div><hr>
+        <div class="menu-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <button id="logoutButton" class="delete-btn">  تسجيل الخروج  </button><br>
+        </div>
+    </div>
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const username = localStorage.getItem('username');
+    if (!username) {
+        window.location.href = './Auth.html';
+    } else {
+        document.getElementById('username').textContent = username;
+    }
+});
+
+document.querySelector('.menu-header').addEventListener('click', function() {
+    const menu = document.querySelector('.scan-menu');
+    menu.classList.toggle('active');
+    
+    const icon = this.querySelector('i');
+    if (menu.classList.contains('active')) {
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+    } else {
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    }
+});
+
+const logoutButton = document.getElementById('logoutButton');
+logoutButton.addEventListener('click', () => {
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
+    window.location.href = './../../index.html';
+    swal("تم تسجيل الخروج", "تم تسجيل الخروج بنجاح.", "success");
+});
+
+</script>
+
+
+
+
+
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--Components--><div id="footer"></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--liberary-->
+<script src="./../../backend/javascript.js"></script>
+<script src="./../Components.js"></script>
+</body>
+
+</html> 
