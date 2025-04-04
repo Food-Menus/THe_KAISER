@@ -15,7 +15,7 @@
 <!--*************************************************************************************************-->
 <!--Components-->
     <div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
-    <div id="navbar" data-Location="./../../index.html" data-imgN="./../../Static/img/Logo1.png" ></div>
+    <div id="navbar" data-Location="./../Page/Profile.html" data-imgN="./../../Static/img/Logo1.png" ></div>
 <!--*************************************************************************************************-->
 <!--*************************************************************************************************-->
 <!--elments-->
@@ -76,14 +76,6 @@ document.querySelector('.menu-header').addEventListener('click', function() {
         icon.classList.remove('fa-chevron-up');
         icon.classList.add('fa-chevron-down');
     }
-});
-
-const logoutButton = document.getElementById('logoutButton');
-logoutButton.addEventListener('click', () => {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
-    window.location.href = './../../index.html';
-    swal("تم تسجيل الخروج", "تم تسجيل الخروج بنجاح.", "success");
 });
 
 </script>

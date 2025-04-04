@@ -15,7 +15,7 @@
 <!--*************************************************************************************************-->
 <!--Components-->
     <div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
-    <div id="navbar" data-Location="./../../index.html" data-imgN="./../../Static/img/Logo1.png" ></div>
+    <div id="navbar" data-Location="./../Page/Profile.html" data-imgN="./../../Static/img/Logo1.png" ></div>
 <!--*************************************************************************************************-->
 <!--*************************************************************************************************-->
 <!--elments-->
@@ -23,11 +23,85 @@
 
 
 
+<figure class="welcome-visual" onclick="toggleAudio()">
+    <img src="./../../Static/img/sites.png" alt="Welcome illustration">
+</figure>
 
+<div class="scan-menu">
+    <div class="scan-line"></div>
+    <div class="menu-header">
+        <span style="font-family: Orbitron, sans-serif;">My Web sites</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="menu-items">
+        <div class="menu-item" data-phone="https://www.pngwing.com/">
+            <span>PING WING</span>
+        </div>
+        <hr>
+        <div class="menu-item" data-phone="https://barcodes.pro/generator/qr">
+            <span>Barcodes</span>
+        </div>
+        <hr>
+        <div class="menu-item" data-phone="https://remixicon.com/">
+            <span>Icons</span>
+        </div>
+        <hr>
+        <div class="menu-item" data-phone="https://github.com/Food-Menus">
+            <span>Mygit hub</span>
+        </div>
+    </div>
+</div>
 
+<script>
 
+document.addEventListener('DOMContentLoaded', () => {
+    const username = localStorage.getItem('username');
+    if (!username) {
+        window.location.href = './Auth.html';
+    } else {
+        document.getElementById('username').textContent = username;
+    }
+});
 
+document.querySelector('.menu-header').addEventListener('click', function() {
+    const menu = document.querySelector('.scan-menu');
+    menu.classList.toggle('active');
+    
+    const icon = this.querySelector('i');
+    if (menu.classList.contains('active')) {
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+    } else {
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    }
+});
 
+const menuHeader = document.querySelector('.menu-header');
+const menuItems = document.querySelector('.menu-items');
+const menuItemsList = document.querySelectorAll('.menu-item');
+
+menuHeader.addEventListener('click', () => {
+    menuItems.style.display = menuItems.style.display === 'block' ? 'none' : 'block';
+});
+
+menuItemsList.forEach(item => {
+    item.addEventListener('click', () => {
+        const phoneNumber = item.getAttribute('data-phone');
+        navigator.clipboard.writeText(phoneNumber);
+        Swal.fire({
+            title: 'تم نسخ لينك الموقع بنجاح',
+            text: phoneNumber,
+            icon: 'success',
+            confirmButtonText: 'حسنًا'
+        });
+    });
+
+});
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!--*************************************************************************************************-->
 <!--*************************************************************************************************-->
