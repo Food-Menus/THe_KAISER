@@ -635,6 +635,20 @@
     font-family: "Orbitron", sans-serif;
 
 }
+.scan-menuu {
+    height: 80%;
+    width: 90%; /* تحديد عرض النموذج */
+    margin: 10% auto; /* توسيط النموذج أفقيًا وعموديًا */
+    padding: 5px;
+    position: relative;
+    width: 300px;
+    background: #f6f6f6;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: "Orbitron", sans-serif;
+
+}
 .menu-header {
     border-radius: 10px;
     background: #00000083;
@@ -655,6 +669,9 @@
 .scan-menu.active .menu-items {
     max-height: 500px;
 }
+.scan-menuu.active .menu-items {
+    max-height: 500px;
+}
 .menu-item {
     font-size: 20px;
     padding: 15px 10px;
@@ -672,6 +689,10 @@
 
 }
 .scan-menu.active .menu-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+.scan-menuu.active .menu-item {
     opacity: 1;
     transform: translateY(0);
 }
@@ -716,6 +737,9 @@
 .scan-menu.active .scan-line {
     opacity: 1;
 }
+.scan-menuu.active .scan-line {
+    opacity: 1;
+}
 .delete-btn {
     display: block; /* يجعل الزر يأخذ كامل عرض الصف */
     padding: 10px  20px;
@@ -736,6 +760,46 @@
 }
 
 
+
+/***************************************************************************/
+/***************************************************************************/
+/* profile list */
+
+
+
+.music-player {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+    width: 300px; /* تحديد عرض المشغل */
+  }
+  
+  .music-cover {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .music-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .music-controls audio {
+    display: none; /* إخفاء مشغل الصوت الافتراضي */
+  }
+  
+  .play-pause-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 /***************************************************************************/
 /***************************************************************************/
 /* Responsive Design */

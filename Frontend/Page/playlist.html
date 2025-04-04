@@ -28,7 +28,7 @@
     <img src="./../../Static/img/music.png" alt="Welcome illustration">
 </figure>
 
-<div class="scan-menu">
+<div class="scan-menuu">
     <div class="scan-line"></div>
     <div class="menu-header">
         <span style=" font-family: Orbitron, sans-serif;"> My List  </span>
@@ -36,25 +36,20 @@
     </div>
     <div class="menu-items">
         <div class="menu-item">
-            <i class="fas fa-home"></i>
-            <span>قائمة الاغاني</span>
+            <span><audio src="./../../Static/sound/Avengers Suite (Theme)(MP3_160K).mp3" controls style="background-color: #f6f6f6;" ></audio></span>
         </div><hr>
         <div class="menu-item">
             <i class="fas fa-user"></i>
-            <span>اكواد سريعة التحضير</span>
+            <span><audio src="./../../Static/sound/L_s theme A(MP3_160K).mp3" controls style="background-color: #f6f6f6;" ></audio></span>
         </div><hr>
         <div class="menu-item">
             <i class="fas fa-cog"></i>
-            <span>مواقع مهمه</span>
+            <span><audio src="./../../Static/sound/Spider-Man_ Far From Home Soundtrack - Back in Black by AC_DC(MP3_160K).mp3" controls style="background-color: #f6f6f6;" ></audio></span>
         </div><hr>
         <div class="menu-item">
             <i class="fas fa-envelope"></i>
-            <span>ارقام مهمه</span>
+            <span><audio src="./../../Static/sound/Avengers Suite (Theme)(MP3_160K).mp3" controls style="background-color: #f6f6f6;" ></audio></span>
         </div><hr>
-        <div class="menu-item">
-            <i class="fas fa-sign-out-alt"></i>
-            <button id="logoutButton" class="delete-btn">  تسجيل الخروج  </button><br>
-        </div>
     </div>
 </div>
 
@@ -70,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.querySelector('.menu-header').addEventListener('click', function() {
-    const menu = document.querySelector('.scan-menu');
+    const menu = document.querySelector('.scan-menuu');
     menu.classList.toggle('active');
     
     const icon = this.querySelector('i');
