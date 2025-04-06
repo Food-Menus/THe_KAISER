@@ -1,31 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
 //******************************************************************************************//
-//*****************************************head*********************************************//
-
-    function HeadComponent(imgH, style) {
-        return `
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>The KAISER Site</title>
-            <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-            <link rel="icon" href="${imgH}" type="image/x-icon">
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <link rel="stylesheet" href="${style}">
-        `;
-    }
-
-    const headElement = document.getElementById('head');
-    if (headElement) {
-        const imgH = headElement.getAttribute('data-imgH');
-        const style = headElement.getAttribute('data-style');
-        headElement.innerHTML = HeadComponent(imgH, style);
-    }
-
-//******************************************************************************************//
 //***************************************navbar*********************************************//
 
     function NavbarComponent(navLocation, imgN) {
