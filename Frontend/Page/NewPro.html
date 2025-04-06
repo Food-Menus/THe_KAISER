@@ -1,69 +1,282 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The KAISER Site</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="icon" href="./../../Static/img/Logo2.png" type="image/x-icon">
-    <link rel="stylesheet" href="./../../Static/style.css">
+    <title>التحكم الصوتي في العناصر</title>
     <style>
-        .footer {
-            background: var(--primary-color-dark);
-            color: white;
+        body {
+            font-family: 'Arial', sans-serif;
             text-align: center;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .box {
+            width: 150px;
+            height: 150px;
+            margin: 30px auto;
+            background-color: #3498db;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+        
+        button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 0 10px;
+        }
+        
+        button:hover {
+            background-color: #27ae60;
+        }
+        
+        #micButton.listening {
+            background-color: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            min-height: 24px;
+        }
+        
+        #commandText {
+            font-size: 18px;
+            color: #3498db;
+            margin: 15px 0;
+            min-height: 27px;
+        }
+        
+        .command-list {
+            text-align: right;
+            margin: 20px auto;
+            max-width: 500px;
+            background-color: #f9f9f9;
             padding: 15px;
-            position: fixed; /* يجعل الفوتر ثابتًا في أسفل الشاشة */
-            bottom: 0; /* يضع الفوتر في أسفل الشاشة */
-            width: 100%; /* يجعل الفوتر يمتد على كامل عرض الشاشة */
+            border-radius: 8px;
+        }
+        
+        .command-list h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .command-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .command-list li {
+            padding: 5px 0;
+            color: #7f8c8d;
         }
     </style>
 </head>
-
 <body>
-<!--*************************************************************************************************-->
-<!--*************************************************************************************************-->
-<!--Components--><div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
-<div id="navbar" data-Location="./../../index.html" data-imgN="./../../Static/img/Logo1.png" ></div>
-<!--*************************************************************************************************-->
-<!--*************************************************************************************************-->
-<!--loading--><div class="loading-overlay" id="loadingScreen">
-<img src="/Static/img/header.png" class="loader-img" alt="Loading..."></div>
-<!--*************************************************************************************************-->
-<!--*************************************************************************************************-->
-<!--elments-->
+    <div class="container">
+        <h1>التحكم الصوتي في العناصر</h1>
+        
+        <div id="commandText"></div>
+        
+        <div class="box" id="targetBox">مربع التحكم</div>
+        
+        <div class="controls">
+            <button id="micButton">🎤 اضغط للتحدث</button>
+            <button id="resetButton">إعادة الضبط</button>
+        </div>
+        
+        <div id="status">الحالة: جاهز</div>
+        
+        <div class="command-list">
+            <h3>الأوامر المتاحة:</h3>
+            <ul>
+                <li>"غير اللون" - تغيير لون المربع</li>
+                <li>"حرك المربع" - تحريك المربع لليمين</li>
+                <li>"ارجع المربع" - إعادة المربع لمكانه</li>
+                <li>"اكبر" - تكبير المربع</li>
+                <li>"اصغر" - تصغير المربع</li>
+                <li>"اخفي المربع" - إخفاء المربع</li>
+                <li>"اظهر المربع" - إظهار المربع</li>
+            </ul>
+        </div>
+    </div>
 
-
-
-
-
-
-
-
-
-
-<!--*************************************************************************************************-->
-<!--*************************************************************************************************-->
-<!--Components--><div id="footer"></div>
-<!--*************************************************************************************************-->
-<!--*************************************************************************************************-->
-<!--liberary-->
-<script src="./../../backend/javascript.js"></script>
-<script src="./../Components.js"></script>
-<script>
-    // إخفاء شاشة التحميل بعد تحميل الصفحة
-    window.addEventListener('load', function() {
-        document.getElementById('loadingScreen').style.display = 'none';
-    });
-
-    // (إختياري) إخفاء الشاشة بعد وقت معين كإحتياط
-    setTimeout(function() {
-        document.getElementById('loadingScreen').style.display = 'none';
-    }, 5000); // 5 ثواني كحد أقصى
-</script>
+    <!-- تضمين TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0"></script>
+    
+    <script>
+        // العناصر الرئيسية في الصفحة
+        const micButton = document.getElementById('micButton');
+        const resetButton = document.getElementById('resetButton');
+        const targetBox = document.getElementById('targetBox');
+        const statusText = document.getElementById('status');
+        const commandText = document.getElementById('commandText');
+        
+        // تهيئة Web Speech API
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            statusText.textContent = "عذرًا، المتصفح الخاص بك لا يدعم التعرف الصوتي. يرجى استخدام Chrome أو Edge.";
+            micButton.disabled = true;
+        } else {
+            const recognizer = new SpeechRecognition();
+            recognizer.lang = 'ar-EG'; // التعرف على اللغة العربية
+            recognizer.continuous = false;
+            recognizer.interimResults = false;
+            
+            // أحداث التعرف الصوتي
+            recognizer.onstart = () => {
+                statusText.textContent = "الحالة: أستمع لك...";
+                commandText.textContent = "";
+                micButton.classList.add('listening');
+            };
+            
+            recognizer.onerror = (event) => {
+                statusText.textContent = `خطأ: ${event.error}`;
+                micButton.classList.remove('listening');
+            };
+            
+            recognizer.onend = () => {
+                statusText.textContent = "الحالة: جاهز";
+                micButton.classList.remove('listening');
+            };
+            
+            recognizer.onresult = async (event) => {
+                const transcript = event.results[0][0].transcript;
+                const command = transcript.toLowerCase();
+                
+                commandText.textContent = `التعرف على: "${transcript}"`;
+                
+                // تنفيذ الأوامر
+                if (command.includes('غير اللون') || command.includes('غير اللون')) {
+                    changeColor();
+                } else if (command.includes('حرك المربع')) {
+                    moveBox();
+                } else if (command.includes('ارجع المربع') || command.includes('رجع المربع')) {
+                    resetBoxPosition();
+                } else if (command.includes('اكبر') || command.includes('كبر')) {
+                    enlargeBox();
+                } else if (command.includes('اصغر') || command.includes('صغر')) {
+                    shrinkBox();
+                } else if (command.includes('اخفي المربع') || command.includes('خفي المربع')) {
+                    hideBox();
+                } else if (command.includes('اظهر المربع') || command.includes('ظهر المربع')) {
+                    showBox();
+                } else {
+                    statusText.textContent = "لم أفهم الأمر، جرب مرة أخرى";
+                }
+            };
+            
+            // أحداث الأزرار
+            micButton.addEventListener('click', () => {
+                try {
+                    recognizer.start();
+                } catch (e) {
+                    statusText.textContent = "خطأ في بدء التعرف الصوتي: " + e.message;
+                }
+            });
+            
+            resetButton.addEventListener('click', resetAll);
+            
+            // دوال التحكم في المربع
+            function changeColor() {
+                const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                targetBox.style.backgroundColor = randomColor;
+                statusText.textContent = "تم تغيير اللون بنجاح!";
+            }
+            
+            function moveBox() {
+                targetBox.style.transform = 'translateX(100px)';
+                statusText.textContent = "تم تحريك المربع لليمين!";
+            }
+            
+            function resetBoxPosition() {
+                targetBox.style.transform = 'translateX(0)';
+                statusText.textContent = "تم إعادة المربع إلى موضعه!";
+            }
+            
+            function enlargeBox() {
+                targetBox.style.transform = 'scale(1.2)';
+                statusText.textContent = "تم تكبير المربع!";
+            }
+            
+            function shrinkBox() {
+                targetBox.style.transform = 'scale(0.8)';
+                statusText.textContent = "تم تصغير المربع!";
+            }
+            
+            function hideBox() {
+                targetBox.style.opacity = '0';
+                statusText.textContent = "تم إخفاء المربع!";
+            }
+            
+            function showBox() {
+                targetBox.style.opacity = '1';
+                statusText.textContent = "تم إظهار المربع!";
+            }
+            
+            function resetAll() {
+                targetBox.style.backgroundColor = '#3498db';
+                targetBox.style.transform = '';
+                targetBox.style.opacity = '1';
+                statusText.textContent = "تم إعادة الضبط!";
+                commandText.textContent = "";
+            }
+            
+            // (اختياري) تحميل نموذج TensorFlow.js لتصنيف الأوامر المعقدة
+            async function loadModel() {
+                try {
+                    // يمكنك استبدال هذا برابط النموذج الخاص بك إذا كان لديك نموذج مدرب
+                    // const model = await tf.loadLayersModel('model/command-model.json');
+                    statusText.textContent = "النموذج جاهز للاستخدام!";
+                } catch (error) {
+                    console.log("لا يوجد نموذج محمل، سيتم استخدام الأوامر الأساسية فقط");
+                }
+            }
+            
+            // تحميل النموذج عند بدء الصفحة
+            window.addEventListener('load', loadModel);
+        }
+    </script>
 </body>
-
-</html> 
+</html>

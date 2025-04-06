@@ -820,7 +820,7 @@
     .loader-img {
         width: 80px;
         height: 80px;
-        animation: spin 1.5s linear infinite;
+        animation: spin 1s linear infinite;
     }
 
     @keyframes spin {
