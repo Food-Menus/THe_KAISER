@@ -10,26 +10,28 @@
             text-align: center;
             padding: 20px;
             background-color: #f5f5f5;
+            margin: 0;
         }
         
         h1 {
             color: #2c3e50;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 100%;
             margin: 0 auto;
             background-color: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
         .box {
-            width: 150px;
-            height: 150px;
-            margin: 30px auto;
+            width: 120px;
+            height: 120px;
+            margin: 20px auto;
             background-color: #3498db;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -38,22 +40,26 @@
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 0.9rem;
         }
         
         .controls {
-            margin: 20px 0;
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         
         button {
             background-color: #2ecc71;
             color: white;
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
+            padding: 12px;
+            font-size: 1rem;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            margin: 0 10px;
+            width: 100%;
         }
         
         button:hover {
@@ -72,42 +78,88 @@
         }
         
         #status {
-            margin-top: 20px;
+            margin-top: 15px;
             padding: 10px;
             border-radius: 5px;
             background-color: #f1f1f1;
             min-height: 24px;
+            font-size: 0.9rem;
         }
         
         #commandText {
-            font-size: 18px;
+            font-size: 1rem;
             color: #3498db;
-            margin: 15px 0;
-            min-height: 27px;
+            margin: 10px 0;
+            min-height: 24px;
+            font-weight: bold;
         }
         
         .command-list {
             text-align: right;
-            margin: 20px auto;
-            max-width: 500px;
+            margin: 15px auto;
             background-color: #f9f9f9;
             padding: 15px;
             border-radius: 8px;
+            font-size: 0.9rem;
         }
         
         .command-list h3 {
             margin-top: 0;
             color: #2c3e50;
+            font-size: 1.1rem;
         }
         
         .command-list ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
         
         .command-list li {
             padding: 5px 0;
             color: #7f8c8d;
+        }
+        
+        #voiceInput {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                padding: 30px;
+            }
+            
+            .controls {
+                flex-direction: row;
+            }
+            
+            button {
+                width: auto;
+            }
         }
     </style>
 </head>
@@ -124,7 +176,10 @@
             <button id="resetButton">إعادة الضبط</button>
         </div>
         
-        <div id="status">الحالة: جاهز</div>
+        <input type="text" id="voiceInput" placeholder="أكتب الأمر هنا إذا لم يعمل الصوت">
+        <button id="textCommandButton">تنفيذ الأمر المكتوب</button>
+        
+        <div id="status">جارٍ التحميل...</div>
         
         <div class="command-list">
             <h3>الأوامر المتاحة:</h3>
@@ -140,6 +195,8 @@
         </div>
     </div>
 
+    <div id="toast" class="toast"></div>
+
     <!-- تضمين TensorFlow.js -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0"></script>
     
@@ -150,133 +207,200 @@
         const targetBox = document.getElementById('targetBox');
         const statusText = document.getElementById('status');
         const commandText = document.getElementById('commandText');
+        const voiceInput = document.getElementById('voiceInput');
+        const textCommandButton = document.getElementById('textCommandButton');
+        const toast = document.getElementById('toast');
         
-        // تهيئة Web Speech API
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        // دالة لعرض الرسائل المؤقتة
+        function showToast(message, duration = 3000) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
         
-        if (!SpeechRecognition) {
-            statusText.textContent = "عذرًا، المتصفح الخاص بك لا يدعم التعرف الصوتي. يرجى استخدام Chrome أو Edge.";
-            micButton.disabled = true;
-        } else {
+        // تهيئة التعرف الصوتي
+        function initializeSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!SpeechRecognition) {
+                statusText.textContent = "عذرًا، المتصفح الخاص بك لا يدعم التعرف الصوتي. يرجى استخدام Chrome أو Edge.";
+                micButton.disabled = true;
+                showToast("المتصفح غير مدعوم - استخدم Chrome أو Edge");
+                return null;
+            }
+            
             const recognizer = new SpeechRecognition();
-            recognizer.lang = 'ar-EG'; // التعرف على اللغة العربية
+            recognizer.lang = 'ar-SA'; // العربية السعودية
             recognizer.continuous = false;
             recognizer.interimResults = false;
             
-            // أحداث التعرف الصوتي
+            return recognizer;
+        }
+        
+        const recognizer = initializeSpeechRecognition();
+        
+        // أحداث التعرف الصوتي
+        if (recognizer) {
             recognizer.onstart = () => {
                 statusText.textContent = "الحالة: أستمع لك...";
                 commandText.textContent = "";
                 micButton.classList.add('listening');
+                showToast("يتحدث الآن...");
             };
             
             recognizer.onerror = (event) => {
-                statusText.textContent = `خطأ: ${event.error}`;
+                let errorMessage = "حدث خطأ ما";
+                if (event.error === 'not-allowed') {
+                    errorMessage = "يجب منح الإذن لاستخدام الميكروفون";
+                } else if (event.error === 'no-speech') {
+                    errorMessage = "لم يتم الكشف عن صوت";
+                }
+                
+                statusText.textContent = errorMessage;
                 micButton.classList.remove('listening');
+                showToast(errorMessage);
             };
             
             recognizer.onend = () => {
+                if (!micButton.classList.contains('listening')) return;
+                
                 statusText.textContent = "الحالة: جاهز";
                 micButton.classList.remove('listening');
             };
             
-            recognizer.onresult = async (event) => {
+            recognizer.onresult = (event) => {
                 const transcript = event.results[0][0].transcript;
                 const command = transcript.toLowerCase();
                 
                 commandText.textContent = `التعرف على: "${transcript}"`;
-                
-                // تنفيذ الأوامر
-                if (command.includes('غير اللون') || command.includes('غير اللون')) {
-                    changeColor();
-                } else if (command.includes('حرك المربع')) {
-                    moveBox();
-                } else if (command.includes('ارجع المربع') || command.includes('رجع المربع')) {
-                    resetBoxPosition();
-                } else if (command.includes('اكبر') || command.includes('كبر')) {
-                    enlargeBox();
-                } else if (command.includes('اصغر') || command.includes('صغر')) {
-                    shrinkBox();
-                } else if (command.includes('اخفي المربع') || command.includes('خفي المربع')) {
-                    hideBox();
-                } else if (command.includes('اظهر المربع') || command.includes('ظهر المربع')) {
-                    showBox();
-                } else {
-                    statusText.textContent = "لم أفهم الأمر، جرب مرة أخرى";
-                }
+                handleCommand(command);
             };
-            
-            // أحداث الأزرار
-            micButton.addEventListener('click', () => {
-                try {
-                    recognizer.start();
-                } catch (e) {
-                    statusText.textContent = "خطأ في بدء التعرف الصوتي: " + e.message;
-                }
-            });
-            
-            resetButton.addEventListener('click', resetAll);
-            
-            // دوال التحكم في المربع
-            function changeColor() {
-                const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'];
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                targetBox.style.backgroundColor = randomColor;
-                statusText.textContent = "تم تغيير اللون بنجاح!";
-            }
-            
-            function moveBox() {
-                targetBox.style.transform = 'translateX(100px)';
-                statusText.textContent = "تم تحريك المربع لليمين!";
-            }
-            
-            function resetBoxPosition() {
-                targetBox.style.transform = 'translateX(0)';
-                statusText.textContent = "تم إعادة المربع إلى موضعه!";
-            }
-            
-            function enlargeBox() {
-                targetBox.style.transform = 'scale(1.2)';
-                statusText.textContent = "تم تكبير المربع!";
-            }
-            
-            function shrinkBox() {
-                targetBox.style.transform = 'scale(0.8)';
-                statusText.textContent = "تم تصغير المربع!";
-            }
-            
-            function hideBox() {
-                targetBox.style.opacity = '0';
-                statusText.textContent = "تم إخفاء المربع!";
-            }
-            
-            function showBox() {
-                targetBox.style.opacity = '1';
-                statusText.textContent = "تم إظهار المربع!";
-            }
-            
-            function resetAll() {
-                targetBox.style.backgroundColor = '#3498db';
-                targetBox.style.transform = '';
-                targetBox.style.opacity = '1';
-                statusText.textContent = "تم إعادة الضبط!";
-                commandText.textContent = "";
-            }
-            
-            // (اختياري) تحميل نموذج TensorFlow.js لتصنيف الأوامر المعقدة
-            async function loadModel() {
-                try {
-                    // يمكنك استبدال هذا برابط النموذج الخاص بك إذا كان لديك نموذج مدرب
-                    // const model = await tf.loadLayersModel('model/command-model.json');
-                    statusText.textContent = "النموذج جاهز للاستخدام!";
-                } catch (error) {
-                    console.log("لا يوجد نموذج محمل، سيتم استخدام الأوامر الأساسية فقط");
-                }
-            }
-            
-            // تحميل النموذج عند بدء الصفحة
-            window.addEventListener('load', loadModel);
         }
+        
+        // أحداث الأزرار
+        micButton.addEventListener('click', async () => {
+            if (!recognizer) return;
+            
+            try {
+                // طلب إذن الميكروفون أولًا (مهم للهواتف)
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                stream.getTracks().forEach(track => track.stop());
+                
+                recognizer.start();
+            } catch (error) {
+                statusText.textContent = "خطأ: " + error.message;
+                showToast("خطأ في الوصول للميكروفون");
+            }
+        });
+        
+        resetButton.addEventListener('click', resetAll);
+        
+        textCommandButton.addEventListener('click', () => {
+            const command = voiceInput.value.toLowerCase();
+            if (command.trim()) {
+                commandText.textContent = `الأمر المكتوب: "${command}"`;
+                handleCommand(command);
+                voiceInput.value = "";
+            }
+        });
+        
+        // دعم إدخال النص عن طريق زر Enter
+        voiceInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                textCommandButton.click();
+            }
+        });
+        
+        // دوال التحكم في المربع
+        function changeColor() {
+            const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            targetBox.style.backgroundColor = randomColor;
+            statusText.textContent = "تم تغيير اللون بنجاح!";
+            showToast("تم تغيير لون المربع!");
+        }
+        
+        function moveBox() {
+            targetBox.style.transform = 'translateX(50px)';
+            statusText.textContent = "تم تحريك المربع لليمين!";
+            showToast("تم تحريك المربع!");
+        }
+        
+        function resetBoxPosition() {
+            targetBox.style.transform = 'translateX(0)';
+            statusText.textContent = "تم إعادة المربع إلى موضعه!";
+            showToast("تم إعادة المربع!");
+        }
+        
+        function enlargeBox() {
+            targetBox.style.transform = 'scale(1.2)';
+            statusText.textContent = "تم تكبير المربع!";
+            showToast("تم تكبير المربع!");
+        }
+        
+        function shrinkBox() {
+            targetBox.style.transform = 'scale(0.8)';
+            statusText.textContent = "تم تصغير المربع!";
+            showToast("تم تصغير المربع!");
+        }
+        
+        function hideBox() {
+            targetBox.style.opacity = '0';
+            statusText.textContent = "تم إخفاء المربع!";
+            showToast("تم إخفاء المربع!");
+        }
+        
+        function showBox() {
+            targetBox.style.opacity = '1';
+            statusText.textContent = "تم إظهار المربع!";
+            showToast("تم إظهار المربع!");
+        }
+        
+        function resetAll() {
+            targetBox.style.backgroundColor = '#3498db';
+            targetBox.style.transform = '';
+            targetBox.style.opacity = '1';
+            statusText.textContent = "تم إعادة الضبط!";
+            commandText.textContent = "";
+            showToast("تمت إعادة التعيين!");
+        }
+        
+        // معالجة الأوامر
+        function handleCommand(command) {
+            console.log("الأمر المسموع:", command);
+            
+            if (command.includes('غير اللون') || command.includes('غير اللون')) {
+                changeColor();
+            } else if (command.includes('حرك المربع')) {
+                moveBox();
+            } else if (command.includes('ارجع المربع') || command.includes('رجع المربع')) {
+                resetBoxPosition();
+            } else if (command.includes('اكبر') || command.includes('كبر')) {
+                enlargeBox();
+            } else if (command.includes('اصغر') || command.includes('صغر')) {
+                shrinkBox();
+            } else if (command.includes('اخفي المربع') || command.includes('خفي المربع')) {
+                hideBox();
+            } else if (command.includes('اظهر المربع') || command.includes('ظهر المربع')) {
+                showBox();
+            } else {
+                statusText.textContent = "لم أفهم الأمر، جرب مرة أخرى";
+                showToast("لم يتم التعرف على الأمر");
+            }
+        }
+        
+        // تحميل الصفحة
+        window.addEventListener('load', () => {
+            statusText.textContent = "جاهز للاستخدام";
+            
+            // كشف نوع الجهاز
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (isMobile) {
+                showToast("مرحبًا! اضغط زر الميكروفون وقل أحد الأوامر", 5000);
+            }
+        });
     </script>
 </body>
 </html>
