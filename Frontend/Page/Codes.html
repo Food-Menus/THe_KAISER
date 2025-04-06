@@ -1261,6 +1261,17 @@ menuItemsList.forEach(item => {
 <!--liberary-->
 <script src="./../../backend/javascript.js" defer></script>
 <script src="./../Components.js" defer></script>
+<script>
+    // إخفاء شاشة التحميل بعد تحميل الصفحة
+    window.addEventListener('load', function() {
+        document.getElementById('loadingScreen').style.display = 'none';
+    });
+
+    // (إختياري) إخفاء الشاشة بعد وقت معين كإحتياط
+    setTimeout(function() {
+        document.getElementById('loadingScreen').style.display = 'none';
+    }, 5000); // 5 ثواني كحد أقصى
+</script>
 </body>
 
 </html> 

@@ -57,12 +57,3 @@
 /********************************************************************************* */
 // loadingScreen
 
-        // إخفاء شاشة التحميل بعد تحميل الصفحة
-        window.addEventListener('load', function() {
-            document.getElementById('loadingScreen').style.display = 'none';
-        });
-
-        // (إختياري) إخفاء الشاشة بعد وقت معين كإحتياط
-        setTimeout(function() {
-            document.getElementById('loadingScreen').style.display = 'none';
-        }, 5000); // 5 ثواني كحد أقصى
