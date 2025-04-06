@@ -10,25 +10,17 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" href="./../../Static/img/Logo2.png" type="image/x-icon">
     <link rel="stylesheet" href="./../../Static/style.css">
-    <style>
-        .footer {
-            background: var(--primary-color-dark);
-            color: white;
-            text-align: center;
-            padding: 15px;
-            position: fixed; /* يجعل الفوتر ثابتًا في أسفل الشاشة */
-            bottom: 0; /* يضع الفوتر في أسفل الشاشة */
-            width: 100%; /* يجعل الفوتر يمتد على كامل عرض الشاشة */
-        }
-    </style>
 </head>
 
 <body>
 <!--*************************************************************************************************-->
 <!--*************************************************************************************************-->
-<!--Components-->
-    <div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
-    <div id="navbar" data-Location="./../Page/Profile.html" data-imgN="./../../Static/img/Logo1.png" ></div>
+<!--Components--><div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
+<div id="navbar" data-Location="./../Page/Profile.html" data-imgN="./../../Static/img/Logo1.png" ></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--loading--><div class="loading-overlay" id="loadingScreen">
+<img src="/Static/img/header.png" class="loader-img" alt="Loading..."></div>
 <!--*************************************************************************************************-->
 <!--*************************************************************************************************-->
 <!--elments-->
@@ -65,9 +57,6 @@
         <hr>
         <div class="menu-item" data-phone="01111465114">
             <span>Mokhtar</span>
-        </div>
-        <div class="menu-item" data-phone="01550130287">
-            <span>Bonita</span>
         </div>
     </div>
 </div>
@@ -122,11 +111,6 @@ menuItemsList.forEach(item => {
 });
 
 </script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-
-
 
 <!--*************************************************************************************************-->
 <!--*************************************************************************************************-->

@@ -24,11 +24,16 @@
 </head>
 
 <body>
+
 <!--*************************************************************************************************-->
 <!--*************************************************************************************************-->
 <!--Components-->
     <div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
     <div id="navbar" data-Location="./../../index.html" data-imgN="./../../Static/img/Logo1.png" ></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--loading--><div class="loading-overlay" id="loadingScreen">
+<img src="/Static/img/header.png" class="loader-img" alt="Loading..."></div>
 <!--*************************************************************************************************-->
 <!--*************************************************************************************************-->
 <!--elments-->
@@ -68,40 +73,54 @@
         </div>
     </div>
 
-<script>
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const username = localStorage.getItem('username');
-        if (!username) {
-            window.location.href = './Auth.html';
-        } else {
-            document.getElementById('username').textContent = username;
-        }
-    });
-    
-    document.querySelector('.menu-header').addEventListener('click', function() {
-        const menu = document.querySelector('.scan-menu');
-        menu.classList.toggle('active');
+
+    <script>
+        // إخفاء شاشة التحميل بعد تحميل الصفحة
+        window.addEventListener('load', function() {
+            document.getElementById('loadingScreen').style.display = 'none';
+        });
+
+        // (إختياري) إخفاء الشاشة بعد وقت معين كإحتياط
+        setTimeout(function() {
+            document.getElementById('loadingScreen').style.display = 'none';
+        }, 5000); // 5 ثواني كحد أقصى
+    </script>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = './Auth.html';
+            } else {
+                document.getElementById('username').textContent = username;
+            }
+        });
         
-        const icon = this.querySelector('i');
-        if (menu.classList.contains('active')) {
-            icon.classList.remove('fa-chevron-down');
-            icon.classList.add('fa-chevron-up');
-        } else {
-            icon.classList.remove('fa-chevron-up');
-            icon.classList.add('fa-chevron-down');
-        }
-    });
+        document.querySelector('.menu-header').addEventListener('click', function() {
+            const menu = document.querySelector('.scan-menu');
+            menu.classList.toggle('active');
+            
+            const icon = this.querySelector('i');
+            if (menu.classList.contains('active')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        });
 
-    const logoutButton = document.getElementById('logoutButton');
-    logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('username');
-        localStorage.removeItem('password');
-        window.location.href = './../../index.html';
-        swal("تم تسجيل الخروج", "تم تسجيل الخروج بنجاح.", "success");
-    });
+        const logoutButton = document.getElementById('logoutButton');
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('username');
+            localStorage.removeItem('password');
+            window.location.href = './../../index.html';
+            swal("تم تسجيل الخروج", "تم تسجيل الخروج بنجاح.", "success");
+        });
 
-</script>
+    </script>
 
 <!--*************************************************************************************************-->
 <!--*************************************************************************************************-->
