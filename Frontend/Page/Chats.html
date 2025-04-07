@@ -389,38 +389,6 @@ body {
     </div>
 
     <script>
-
-          // طلب إذن الإشعارات عند تحميل الصفحة
-    document.addEventListener('DOMContentLoaded', () => {
-        if ('Notification' in window) {
-            Notification.requestPermission().then(permission => {
-                if (permission === 'granted') {
-                    console.log('تم منح إذن الإشعارات');
-                }
-            });
-        }
-    });
-    
-    // دالة لعرض الإشعار
-    function showNotification(name, message) {
-        if ('Notification' in window && Notification.permission === 'granted' && !isPageVisible) {
-            const notification = new Notification('رسالة جديدة من ' + name, {
-                body: message,
-                icon: './../../Static/img/Logo2.png',
-                dir: 'rtl'
-            });
-            
-            notification.onclick = () => {
-                window.focus();
-            };
-        }
-    }
-
-
-
-
-
-
         // جلب بيانات المحادثة من Google Sheets
         const sheetID = '1VvT7SoBoson_8hx1dQfboQFRTtRHEd5f6HZXD3vIhDw';
         const baseUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
@@ -428,6 +396,39 @@ body {
         // عناصر DOM
         const chatContainer = document.getElementById('chat-container');
         const currentUser = localStorage.getItem('username');
+        let lastMessageCount = 0;
+        let isPageVisible = true;
+        
+        // التحقق من رؤية الصفحة
+        document.addEventListener('visibilitychange', () => {
+            isPageVisible = !document.hidden;
+        });
+        
+        // طلب إذن الإشعارات عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        console.log('تم منح إذن الإشعارات');
+                    }
+                });
+            }
+        });
+        
+        // دالة لعرض الإشعار
+        function showNotification(name, message) {
+            if ('Notification' in window && Notification.permission === 'granted' && !isPageVisible) {
+                const notification = new Notification('رسالة جديدة من ' + name, {
+                    body: message,
+                    icon: './../../Static/img/Logo2.png',
+                    dir: 'rtl'
+                });
+                
+                notification.onclick = () => {
+                    window.focus();
+                };
+            }
+        }
         
         // دالة لتحميل البيانات
         function loadChatData() {
@@ -437,6 +438,23 @@ body {
                     try {
                         const json = JSON.parse(data.substring(47).slice(0, -2));
                         const rows = json.table.rows;
+                        
+                        // التحقق من وجود رسائل جديدة
+                        if (rows && rows.length > lastMessageCount && lastMessageCount > 0) {
+                            const newMessages = rows.slice(lastMessageCount);
+                            newMessages.forEach(row => {
+                                const name = row.c[0] ? row.c[0].v : "مجهول";
+                                const message = row.c[1] ? row.c[1].v : "لا توجد رسالة";
+                                
+                                // عرض إشعار فقط إذا كانت الرسالة ليست من المستخدم الحالي
+                                if (name !== currentUser) {
+                                    showNotification(name, message);
+                                }
+                            });
+                        }
+                        
+                        // تحديث عدد الرسائل الأخير
+                        lastMessageCount = rows ? rows.length : 0;
                         
                         // مسح رسالة التحميل
                         chatContainer.innerHTML = '';
@@ -485,54 +503,26 @@ body {
         }
         
         // تحميل البيانات عند فتح الصفحة
-        document.addEventListener('DOMContentLoaded', loadChatData);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadChatData();
+            
+            // تعيين عدد الرسائل الأولي بعد التحميل الأول
+            setTimeout(() => {
+                fetch(baseUrl)
+                    .then(response => response.text())
+                    .then(data => {
+                        try {
+                            const json = JSON.parse(data.substring(47).slice(0, -2));
+                            lastMessageCount = json.table.rows ? json.table.rows.length : 0;
+                        } catch (error) {
+                            console.error('Error parsing initial message count:', error);
+                        }
+                    });
+            }, 1000);
+        });
         
         // تحديث البيانات كل ثانية
-        setInterval(loadChatData, 500);
-    </script>
-
-    <script>
-        // جلب اسم المستخدم من localStorage
-        const username = localStorage.getItem('username');
-        if (!username) {
-            swal("تحذير", "الرجاء تسجيل الدخول أولاً", "warning");
-            // يمكنك إضافة redirect لصفحة تسجيل الدخول هنا
-        } else {
-            document.getElementById('name').value = username;
-        }
-
-        const scriptURL = "https://script.google.com/macros/s/AKfycbwsWyLapiBKAMkQEgQYTisa1xKEo5vL31GFKU8aGZA8WXgsBinTD_q7qOTyzc8K4FOD/exec";
-        const form = document.forms["Notes-form"];
-        const sendingMessage = document.getElementById('sending-message');
-        
-        form.addEventListener("submit", (e) => {
-          e.preventDefault();
-          
-          // عرض رسالة جاري الإرسال
-          sendingMessage.style.display = 'block';
-          
-          // إخفاء الرسالة بعد 2 ثانية
-          setTimeout(() => {
-              sendingMessage.style.display = 'none';
-          }, 2000);
-          
-          var formData = new FormData(form);
-          
-          const now = new Date();
-          const timeString = now.toLocaleString('ar-EG', {
-            dateStyle: 'short',
-            timeStyle: 'short'
-          });
-          formData.append('time', timeString);
-
-          fetch(scriptURL, { method: "POST", body: formData })
-            .then((response) => {
-              form.reset();
-            })
-            .catch((error) => {
-              alert("في مشكله", " رسالتك موصلتش ابعت بعدين", "error");
-            });
-        });
+        setInterval(loadChatData, 1000);
     </script>
 
 <!--*************************************************************************************************-->
