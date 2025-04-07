@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The KAISER Site</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" href="./../../Static/img/Logo2.png" type="image/x-icon">
+    <style>
+        /* CSS لتنسيق واجهة تشبه واتساب الموبايل */
+:root {
+    --whatsapp-green: #6A0C0B;
+    --whatsapp-light-green: #25D366;
+    --whatsapp-dark-green: #6A0C0B;
+    --whatsapp-chat-bg: #e5ddd5;
+    --whatsapp-message-out: #DCF8C6;
+    --whatsapp-message-in: #FFFFFF;
+    --whatsapp-time-color: #667781;
+    --primary: #eaa11b;  
+    --primary-color-dark: #AA0505;   
+    --color-one: #FBCA03 ;   
+    --color-two: #B9BEBA;
+    --light: #f8f9fa;     
+    --primary-color: #6A0C0B;
+    --text-primary-color-dark: #eaa11b;
+    --text-light: #427d42;
+    --white: #ffffff;
+    --header-font: "Orbitron", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #e5ddd5;
+  background-image: url("https://web.whatsapp.com/img/bg-chat-tile-light_a4be512e7195b6b733d9110b408f075d.png");
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  direction: rtl;
+}
+
+
+/***************************************************************************/
+/***************************************************************************/
+/* sidebar */
+
+.sidebar {
+        position: fixed;
+        right: -300px;
+        top: 0;
+        width: 300px;
+        height: 100vh;
+        background: var(--primary-color);
+        color: white;
+        transition: right 0.3s;
+        padding: 20px;
+        z-index: 1000;
+    }
+    .sidebar.active {
+        right: 0;
+    }
+    .sidebar .logo {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    .sidebar-menus a {
+        font-size: 25px;
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 12px;
+        margin: 5px 0;
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+    .sidebar-menus a:hover {
+        background: var(--primary);
+        transform: translateX(-5px);
+    }
+    .menu-off {
+        background: var(--primary);
+        margin-top: 20px;
+        text-align: center;
+    }
+
+/***************************************************************************/
+/***************************************************************************/
+/* navbar */
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 15px;
+        padding-right: 15px;
+        background: var(--primary-color-dark);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar img {
+        height: 100%;
+    }
+    .head-img {
+        width: 20%;
+    }
+    .menu-toggle, .user {
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+    .menu-toggle:hover, .user:hover {
+        transform: scale(1.1);
+    }
+
+
+
+
+
+.main1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  background-color: var(--whatsapp-dark-green);
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.header h1 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.chat-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: var(--whatsapp-chat-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  color: var(--whatsapp-time-color);
+}
+
+.message {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 7.5px;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.message-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.sender-name {
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--whatsapp-dark-green);
+}
+
+.message-time {
+  font-size: 11px;
+  color: var(--whatsapp-time-color);
+  margin-right: 5px;
+}
+
+.message-content {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* تنسيقات الرسائل الخاصة بالمستخدم */
+.my-message {
+  align-self: flex-end;
+  background-color: var(--whatsapp-message-out);
+  margin-left: 30%;
+  margin-right: 0;
+}
+
+/* تنسيقات رسائل الآخرين */
+.other-message {
+  align-self: flex-start;
+  background-color: var(--whatsapp-message-in);
+  margin-right: 30%;
+  margin-left: 0;
+}
+
+.other-message .message-info {
+  flex-direction: row-reverse;
+}
+
+.other-message .message-time {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+/* تنسيقات نموذج الإرسال */
+.form-container {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.message-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-group {
+  flex: 1;
+  position: relative;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 21px;
+  background-color: white;
+  font-size: 15px;
+  outline: none;
+}
+
+.submit-btn {
+  background-color: var(--whatsapp-green);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: var(--whatsapp-dark-green);
+}
+
+.btn-text {
+  display: none;
+}
+
+
+.time-display {
+  text-align: center;
+  font-size: 12px;
+  color: var(--whatsapp-time-color);
+  margin-top: 5px;
+}
+
+/* رسالة جاري الإرسال */
+.sending-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.7);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 10;
+  animation: fadeInOut 2s ease-in-out;
+  display: none;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* تنسيقات للجوال */
+@media (max-width: 600px) {
+    
+    .sidebar {
+        width: 250px;
+    }
+    
+    .navbar img {
+        height: 100%;
+    }
+    
+    .sidebar {
+        width: 250px;
+    }
+    
+    .navbar img {
+        height: 100%;
+    }
+
+    .head-img {
+        width: 50%;
+    }
+    
+  body {
+    height: 100vh;
+  }
+  
+  .header h1 {
+    font-size: 16px;
+  }
+  
+  .form-input {
+    padding: 10px 12px;
+  }
+  
+  .submit-btn {
+    width: 42px;
+    height: 42px;
+  }
+  
+  .my-message {
+    margin-left: 5%;
+  }
+  
+  .other-message {
+    margin-right: 5%;
+  }
+}
+    </style>
+</head>
+
+<body>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--Components-->
+<div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
+<div id="navbar" data-Location="./../../index.html" data-imgN="./../../Static/img/Logo1.png" ></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--loading--><div class="loading-overlay" id="loadingScreen">
+<img src="/Static/img/header.png" class="loader-img" alt="Loading..."></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--elments-->
+
+
+
+    <div class="main1">
+        <div class="header">
+            <h1 style="font-size: 20px; font-weight:bold ;">Xs Link</h1>
+        </div>
+        
+        <div class="chat-container" id="chat-container">
+            <div class="loading">جاري تحميل المحادثة...</div>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <form id="Notes-form" class="message-form">            
+            <!-- تمت إضافة حقل مخفي لاسم المستخدم -->
+            <input type="hidden" name="name" id="name">
+            
+            <div class="form-group">
+                <input class="form-input"
+                       type="text"
+                       name="message"
+                       id="message"
+                       placeholder="رسالتك"
+                       required
+                       aria-label="رسالتك">
+                <div class="sending-message" id="sending-message">جاري الإرسال...</div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M2 5.5V3.9934C2 3.44476 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44495 22 3.9934V20.0066C22 20.5552 21.5447 21 21.0082 21H2.9918C2.44405 21 2 20.5551 2 20.0066V19H20V7.3L12 14.5L2 5.5ZM0 10H5V12H0V10ZM0 15H8V17H0V15Z"></path></svg>
+            </button>
+            
+        </form>
+    </div>
+
+    <script>
+        // جلب بيانات المحادثة من Google Sheets
+        const sheetID = '1VvT7SoBoson_8hx1dQfboQFRTtRHEd5f6HZXD3vIhDw';
+        const baseUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+        
+        // عناصر DOM
+        const chatContainer = document.getElementById('chat-container');
+        const currentUser = localStorage.getItem('username');
+        
+        // دالة لتحميل البيانات
+        function loadChatData() {
+            fetch(baseUrl)
+                .then(response => response.text())
+                .then(data => {
+                    try {
+                        const json = JSON.parse(data.substring(47).slice(0, -2));
+                        const rows = json.table.rows;
+                        
+                        // مسح رسالة التحميل
+                        chatContainer.innerHTML = '';
+                        
+                        if (!rows || rows.length === 0) {
+                            chatContainer.innerHTML = '<div class="error">لا توجد رسائل متاحة</div>';
+                            return;
+                        }
+                        
+                        // عرض كل الرسائل
+                        rows.forEach((row) => {
+                            // الأعمدة: 0=الاسم، 1=الرسالة، 2=الوقت
+                            const name = row.c[0] ? row.c[0].v : "مجهول";
+                            const message = row.c[1] ? row.c[1].v : "لا توجد رسالة";
+                            const timestamp = row.c[2] ? row.c[2].v : new Date().toLocaleTimeString('ar-EG');
+                            
+                            const messageDiv = document.createElement('div');
+                            // تحديد كلاس الرسالة حسب المرسل
+                            messageDiv.className = name === currentUser ? 'message my-message' : 'message other-message';
+                            
+                            messageDiv.innerHTML = `
+                                <div class="message-info">
+                                    <span class="sender-name">${name}</span>
+                                    <span class="message-time">${timestamp}</span>
+                                </div>
+                                <div class="message-content">${message}</div>
+                            `;
+                            
+                            chatContainer.appendChild(messageDiv);
+                        });
+                        
+                        // التمرير لآخر رسالة
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    } catch (error) {
+                        console.error('Error parsing data:', error);
+                        chatContainer.innerHTML = '<div class="error">حدث خطأ في معالجة البيانات</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    chatContainer.innerHTML = '<div class="error">حدث خطأ أثناء جلب البيانات</div>';
+                });
+        }
+        
+        // تحميل البيانات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', loadChatData);
+        
+        // تحديث البيانات كل ثانية
+        setInterval(loadChatData, 500);
+    </script>
+
+    <script>
+        // جلب اسم المستخدم من localStorage
+        const username = localStorage.getItem('username');
+        if (!username) {
+            swal("تحذير", "الرجاء تسجيل الدخول أولاً", "warning");
+            // يمكنك إضافة redirect لصفحة تسجيل الدخول هنا
+        } else {
+            document.getElementById('name').value = username;
+        }
+
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwsWyLapiBKAMkQEgQYTisa1xKEo5vL31GFKU8aGZA8WXgsBinTD_q7qOTyzc8K4FOD/exec";
+        const form = document.forms["Notes-form"];
+        const sendingMessage = document.getElementById('sending-message');
+        
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          
+          // عرض رسالة جاري الإرسال
+          sendingMessage.style.display = 'block';
+          
+          // إخفاء الرسالة بعد 2 ثانية
+          setTimeout(() => {
+              sendingMessage.style.display = 'none';
+          }, 2000);
+          
+          var formData = new FormData(form);
+          
+          const now = new Date();
+          const timeString = now.toLocaleString('ar-EG', {
+            dateStyle: 'short',
+            timeStyle: 'short'
+          });
+          formData.append('time', timeString);
+
+          fetch(scriptURL, { method: "POST", body: formData })
+            .then((response) => {
+              form.reset();
+            })
+            .catch((error) => {
+              alert("في مشكله", " رسالتك موصلتش ابعت بعدين", "error");
+            });
+        });
+    </script>
+
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--liberary-->
+<script src="./../../backend/javascript.js" defer></script>
+<script src="./../Components.js" defer></script>
+<script>
+    // إخفاء شاشة التحميل بعد تحميل الصفحة
+    window.addEventListener('load', function() {
+        document.getElementById('loadingScreen').style.display = 'none';
+    });
+
+    // (إختياري) إخفاء الشاشة بعد وقت معين كإحتياط
+    setTimeout(function() {
+        document.getElementById('loadingScreen').style.display = 'none';
+    }, 5000); // 5 ثواني كحد أقصى
+
+    document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = './Auth.html';
+            } else {
+                document.getElementById('username').textContent = username;
+            }
+        });
+</script>
+</body>
+</html>

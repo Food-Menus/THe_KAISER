@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -163,6 +164,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>التحكم الصوتي في العناصر</h1>
@@ -401,6 +403,18 @@
                 showToast("مرحبًا! اضغط زر الميكروفون وقل أحد الأوامر", 5000);
             }
         });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = './Auth.html';
+            } else {
+                document.getElementById('username').textContent = username;
+            }
+        });
     </script>
+    
 </body>
+
 </html>

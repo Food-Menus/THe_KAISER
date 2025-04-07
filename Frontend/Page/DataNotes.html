@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>The KAISER Site</title>
+        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="icon" href="./../../Static/img/Logo2.png" type="image/x-icon">
+        <link rel="stylesheet" href="./../../Static/style.css">  
+        <style>
+            :root {
+    --primary-color: #128C7E;
+    --secondary-color: #25D366;
+    --chat-bg: #e5ddd5;
+    --sender-bg: #DCF8C6;
+    --receiver-bg: #FFFFFF;
+    --text-color: #262626;
+    --time-color: #888;
+    --header-height: 60px;
+    --input-height: 70px;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f0f0f0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* هيدر الشات */
+  .header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0 15px;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    z-index: 100;
+  }
+  
+  .header h1 {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  
+  /* منطقة الشات الرئيسية */
+  .chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 15px;
+    background-color: var(--chat-bg);
+    background-image: url('https://web.whatsapp.com/img/bg-chat-tile-light_a4be512e7195b6b733d9110b408f075d.png');
+    background-repeat: repeat;
+    -webkit-overflow-scrolling: touch; /* لسلاسة التمرير على iOS */
+  }
+  
+  /* تصميم الرسائل */
+  .message {
+    max-width: 80%;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    border-radius: 7.5px;
+    position: relative;
+    word-wrap: break-word;
+    font-size: 0.95rem;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .sender {
+    align-self: flex-end;
+    background-color: var(--sender-bg);
+    margin-left: 20%;
+    border-top-right-radius: 0;
+  }
+  
+  .receiver {
+    align-self: flex-start;
+    background-color: var(--receiver-bg);
+    margin-right: 20%;
+    border-top-left-radius: 0;
+  }
+  
+  /* معلومات الرسالة */
+  .message-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  
+  .sender-name {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.9rem;
+  }
+  
+  .message-time {
+    font-size: 0.7rem;
+    color: var(--time-color);
+    margin-right: 5px;
+  }
+  
+  .message-content {
+    color: var(--text-color);
+    line-height: 1.4;
+  }
+  
+  /* تأثيرات فقاعات الرسائل */
+  .sender:before {
+    content: "";
+    position: absolute;
+    right: -8px;
+    top: 0;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-left-color: var(--sender-bg);
+    border-right: 0;
+    border-top: 0;
+    margin-top: 0;
+    margin-right: -10px;
+  }
+  
+  .receiver:before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 0;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-right-color: var(--receiver-bg);
+    border-left: 0;
+    border-top: 0;
+    margin-top: 0;
+    margin-left: -10px;
+  }
+  
+  /* حالات التحميل والخطأ */
+  .loading, .error {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .error {
+    color: #e74c3c;
+    background-color: #fde8e8;
+    margin: 10px;
+    border-radius: 5px;
+  }
+  
+  /* شريط التمرير */
+  .chat-container::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .chat-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .chat-container::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+  }
+  
+  /* تأثيرات اللمس للهواتف */
+  .message {
+    transition: transform 0.1s ease;
+  }
+  
+  .message:active {
+    transform: scale(0.98);
+  }
+  
+
+  /* تعديلات للوضع الأفقي */
+  @media (orientation: landscape) {
+    .header {
+      height: 50px;
+    }
+    
+    .header h1 {
+      font-size: 1rem;
+    }
+    
+    .chat-container {
+      padding-bottom: 10px;
+    }
+  }
+        </style>
+    </head>
+<body>
+
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--Components--><div id="sidebar" data-AI="./AI.html" data-about="./about.html"></div>
+<div id="navbar" data-Location="./../../index.html" data-imgN="./../../Static/img/Logo1.png" ></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--loading--><div class="loading-overlay" id="loadingScreen">
+<img src="/Static/img/header.png" class="loader-img" alt="Loading..."></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--elments-->
+
+
+
+    <div class="main1">
+    <div class="header">
+        <h1>سجل المحادثات</h1>
+    </div>
+    
+    <div class="chat-container" id="chat-container">
+        <div class="loading">جاري تحميل المحادثة...</div>
+    </div>
+
+   </div>
+    <script>
+        // جلب بيانات المحادثة من Google Sheets
+        const sheetID = '1jBnmLHfY170sdOT7NcLRKgLkB1BwgGi3_olJ5u27izg';
+        const baseUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+        
+        // عناصر DOM
+        const chatContainer = document.getElementById('chat-container');
+        
+        // دالة لتحميل البيانات
+        function loadChatData() {
+            fetch(baseUrl)
+                .then(response => response.text())
+                .then(data => {
+                    const json = JSON.parse(data.substring(47).slice(0, -2));
+                    const rows = json.table.rows;
+                    
+                    // مسح رسالة التحميل
+                    chatContainer.innerHTML = '';
+                    
+                    if (!rows || rows.length === 0) {
+                        chatContainer.innerHTML = '<div class="error">لا توجد رسائل متاحة</div>';
+                        return;
+                    }
+                    
+                    // عرض كل الرسائل
+                    rows.forEach((row, index) => {
+                        const name = row.c[0] ? row.c[0].v : "مجهول";
+                        const message = row.c[1] ? row.c[1].v : "";
+                        const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                        
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = `message ${index % 2 === 0 ? 'receiver' : 'sender'}`;
+                        
+                        messageDiv.innerHTML = `
+                            <div class="message-info">
+                                <span class="sender-name">${name}</span>
+                                <span class="message-time">${timestamp}</span>
+                            </div>
+                            <div class="message-content">${message}</div>
+                        `;
+                        
+                        chatContainer.appendChild(messageDiv);
+                    });
+                    
+                    // التمرير لآخر رسالة
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    chatContainer.innerHTML = '<div class="error">حدث خطأ أثناء جلب البيانات</div>';
+                });
+        }
+        
+        // تحميل البيانات عند فتح الصفحة
+        window.addEventListener('DOMContentLoaded', loadChatData);
+        
+        // تحديث البيانات كل 30 ثانية
+        setInterval(loadChatData, 30000);
+    </script>
+
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--Components--><div id="footer"></div>
+<!--*************************************************************************************************-->
+<!--*************************************************************************************************-->
+<!--liberary-->
+<script src="./../../backend/javascript.js"></script>
+<script src="./../Components.js"></script>
+<script>
+    // إخفاء شاشة التحميل بعد تحميل الصفحة
+    window.addEventListener('load', function() {
+        document.getElementById('loadingScreen').style.display = 'none';
+    });
+
+    // (إختياري) إخفاء الشاشة بعد وقت معين كإحتياط
+    setTimeout(function() {
+        document.getElementById('loadingScreen').style.display = 'none';
+    }, 5000); // 5 ثواني كحد أقصى
+
+    document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = './Auth.html';
+            } else {
+                document.getElementById('username').textContent = username;
+            }
+        });
+</script>
+</body>
+</html>

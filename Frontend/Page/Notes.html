@@ -72,7 +72,7 @@
 
 
     <script>
-        const scriptURL = "    https://script.google.com/macros/s/AKfycbw4hSAIHKIg-4_hJxsPs6h8yTVW-xwQr4q4_cvr7PMCY4TI93hqkWIrT75dXtep13nK/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbw4hSAIHKIg-4_hJxsPs6h8yTVW-xwQr4q4_cvr7PMCY4TI93hqkWIrT75dXtep13nK/exec";
         const form = document.forms["Notes-form"];
         form.addEventListener("submit", (e) => {
           e.preventDefault();
@@ -80,11 +80,21 @@
   
           fetch(scriptURL, { method: "POST", body: formData })
             .then((response) => {
-              swal("ابسط", "رسالتك اتبعتت", "success");
+              alert("ابسط", "رسالتك اتبعتت", "success");
+              form.reset();
             })
             .catch((error) => {
-              swal("في مشكله", " رسالتك موصلتش ابعت بعدين", "error");
+              alert("في مشكله", " رسالتك موصلتش ابعت بعدين", "error");
             });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = './Auth.html';
+            } else {
+                document.getElementById('username').textContent = username;
+            }
         });
     </script>
 
