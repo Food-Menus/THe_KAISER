@@ -131,236 +131,211 @@ body {
 
 
 
-.main1 {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
+    .main1 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    }
+    .header {
+    background-color: var(--whatsapp-dark-green);
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+    font-size: 18px;
+    font-weight: 500;
+    }
+    .chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: var(--whatsapp-chat-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    }
+    .loading, .error {
+    text-align: center;
+    padding: 20px;
+    color: var(--whatsapp-time-color);
+    }
+    .message {
+    max-width: 70%;
+    padding: 8px 12px;
+    border-radius: 7.5px;
+    position: relative;
+    word-wrap: break-word;
+    }
+    .message-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    }
+    .sender-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: var(--whatsapp-dark-green);
+    }
+    .message-time {
+    font-size: 15px;
+    color: var(--whatsapp-time-color);
+    margin-right: 5px;
+    }
+    .message-content {
+    font-size: 15px;
+    line-height: 1.4;
+    }
+    /* تنسيقات الرسائل الخاصة بالمستخدم */
+    .my-message {
+    align-self: flex-end;
+    background-color: var(--whatsapp-message-out);
+    margin-left: 30%;
+    margin-right: 0;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+    border-bottom-left-radius: 9px;
+    }
+    /* تنسيقات رسائل الآخرين */
+    .other-message {
+    align-self: flex-start;
+    background-color: var(--whatsapp-message-in);
+    margin-right: 30%;
+    margin-left: 0;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 9px;
+    border-bottom-left-radius: 9px;
+    }
+    .other-message .message-info {
+    flex-direction: row-reverse;
+    }
+    .other-message .message-time {
+    margin-right: 0;
+    margin-left: 5px;
+    }
+    /* تنسيقات نموذج الإرسال */
+    .form-container {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    }
+    .message-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    }
+    .form-group {
+    flex: 1;
+    position: relative;
+    }
+    .form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 21px;
+    background-color: white;
+    font-size: 15px;
+    outline: none;
+    }
+    .submit-btn {
+    background-color: var(--whatsapp-green);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    }
+    .submit-btn:hover {
+    background-color: var(--whatsapp-dark-green);
+    }
+    .btn-text {
+    display: none;
+    }
+    .time-display {
+    text-align: center;
+    font-size: 12px;
+    color: var(--whatsapp-time-color);
+    margin-top: 5px;
+    }
+    /* رسالة جاري الإرسال */
+    .sending-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    z-index: 10;
+    animation: fadeInOut 2s ease-in-out;
+    display: none;
+    }
+    @keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+    }
+    /* تنسيقات للجوال */
+    @media (max-width: 600px) {
+        
+        .sidebar {
+            width: 250px;
+        }
+        
+        .navbar img {
+            height: 100%;
+        }
+        
+        .sidebar {
+            width: 250px;
+        }
+        
+        .navbar img {
+            height: 100%;
+        }
 
-.header {
-  background-color: var(--whatsapp-dark-green);
-  color: white;
-  padding: 15px 20px;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.header h1 {
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.chat-container {
-  flex: 1;
-  overflow-y: auto;
-  padding: 10px;
-  background-color: var(--whatsapp-chat-bg);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.loading, .error {
-  text-align: center;
-  padding: 20px;
-  color: var(--whatsapp-time-color);
-}
-
-.message {
-  max-width: 70%;
-  padding: 8px 12px;
-  border-radius: 7.5px;
-  position: relative;
-  word-wrap: break-word;
-}
-
-.message-info {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-}
-
-.sender-name {
-  font-weight: bold;
-  font-size: 14px;
-  color: var(--whatsapp-dark-green);
-}
-
-.message-time {
-  font-size: 15px;
-  color: var(--whatsapp-time-color);
-  margin-right: 5px;
-}
-
-.message-content {
-  font-size: 15px;
-  line-height: 1.4;
-}
-
-/* تنسيقات الرسائل الخاصة بالمستخدم */
-.my-message {
-  align-self: flex-end;
-  background-color: var(--whatsapp-message-out);
-  margin-left: 30%;
-  margin-right: 0;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 9px;
-  border-bottom-right-radius: 9px;
-  border-bottom-left-radius: 9px;
-}
-
-/* تنسيقات رسائل الآخرين */
-.other-message {
-  align-self: flex-start;
-  background-color: var(--whatsapp-message-in);
-  margin-right: 30%;
-  margin-left: 0;
-  border-top-left-radius: 9px;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 9px;
-  border-bottom-left-radius: 9px;
-}
-
-.other-message .message-info {
-  flex-direction: row-reverse;
-}
-
-.other-message .message-time {
-  margin-right: 0;
-  margin-left: 5px;
-}
-
-/* تنسيقات نموذج الإرسال */
-.form-container {
-  background-color: #f0f0f0;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-}
-
-.message-form {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.form-group {
-  flex: 1;
-  position: relative;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px 15px;
-  border: none;
-  border-radius: 21px;
-  background-color: white;
-  font-size: 15px;
-  outline: none;
-}
-
-.submit-btn {
-  background-color: var(--whatsapp-green);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.submit-btn:hover {
-  background-color: var(--whatsapp-dark-green);
-}
-
-.btn-text {
-  display: none;
-}
-
-
-.time-display {
-  text-align: center;
-  font-size: 12px;
-  color: var(--whatsapp-time-color);
-  margin-top: 5px;
-}
-
-/* رسالة جاري الإرسال */
-.sending-message {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.7);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  z-index: 10;
-  animation: fadeInOut 2s ease-in-out;
-  display: none;
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* تنسيقات للجوال */
-@media (max-width: 600px) {
-    
-    .sidebar {
-        width: 250px;
+        .head-img {
+            width: 50%;
+        }
+        
+    body {
+        height: 100vh;
     }
     
-    .navbar img {
-        height: 100%;
+    .header h1 {
+        font-size: 16px;
     }
     
-    .sidebar {
-        width: 250px;
+    .form-input {
+        padding: 10px 12px;
     }
     
-    .navbar img {
-        height: 100%;
-    }
-
-    .head-img {
-        width: 50%;
+    .submit-btn {
+        width: 42px;
+        height: 42px;
     }
     
-  body {
-    height: 100vh;
-  }
-  
-  .header h1 {
-    font-size: 16px;
-  }
-  
-  .form-input {
-    padding: 10px 12px;
-  }
-  
-  .submit-btn {
-    width: 42px;
-    height: 42px;
-  }
-  
-  .my-message {
-    margin-left: 5%;
-  }
-  
-  .other-message {
-    margin-right: 5%;
-  }
-}
+    .my-message {
+        margin-left: 5%;
+    }
+    
+    .other-message {
+        margin-right: 5%;
+    }
+    }
     </style>
 </head>
 
@@ -414,6 +389,38 @@ body {
     </div>
 
     <script>
+
+          // طلب إذن الإشعارات عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+        if ('Notification' in window) {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    console.log('تم منح إذن الإشعارات');
+                }
+            });
+        }
+    });
+    
+    // دالة لعرض الإشعار
+    function showNotification(name, message) {
+        if ('Notification' in window && Notification.permission === 'granted' && !isPageVisible) {
+            const notification = new Notification('رسالة جديدة من ' + name, {
+                body: message,
+                icon: './../../Static/img/Logo2.png',
+                dir: 'rtl'
+            });
+            
+            notification.onclick = () => {
+                window.focus();
+            };
+        }
+    }
+
+
+
+
+
+
         // جلب بيانات المحادثة من Google Sheets
         const sheetID = '1VvT7SoBoson_8hx1dQfboQFRTtRHEd5f6HZXD3vIhDw';
         const baseUrl = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
