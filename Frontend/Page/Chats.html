@@ -10,7 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" href="./../../Static/img/Logo2.png" type="image/x-icon">
+    
     <style>
+
         /* CSS لتنسيق واجهة تشبه واتساب الموبايل */
 :root {
     --whatsapp-green: #6A0C0B;
@@ -36,7 +38,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Tajawal', sans-serif;
 }
 
 body {
@@ -187,7 +189,7 @@ body {
 }
 
 .message-time {
-  font-size: 11px;
+  font-size: 15px;
   color: var(--whatsapp-time-color);
   margin-right: 5px;
 }
@@ -203,6 +205,10 @@ body {
   background-color: var(--whatsapp-message-out);
   margin-left: 30%;
   margin-right: 0;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 9px;
+  border-bottom-right-radius: 9px;
+  border-bottom-left-radius: 9px;
 }
 
 /* تنسيقات رسائل الآخرين */
@@ -211,6 +217,10 @@ body {
   background-color: var(--whatsapp-message-in);
   margin-right: 30%;
   margin-left: 0;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 9px;
+  border-bottom-left-radius: 9px;
 }
 
 .other-message .message-info {
@@ -443,9 +453,12 @@ body {
                             messageDiv.innerHTML = `
                                 <div class="message-info">
                                     <span class="sender-name">${name}</span>
+                                </div>
+                                
+                                <div class="message-content">${message}</div>
+                                <div class="message-info">
                                     <span class="message-time">${timestamp}</span>
                                 </div>
-                                <div class="message-content">${message}</div>
                             `;
                             
                             chatContainer.appendChild(messageDiv);
